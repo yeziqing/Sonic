@@ -1,0 +1,93 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background = "@drawable/wallpaper3">
+
+    
+      <Button
+        android:id="@+id/moveByAcc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal = "true"
+        android:paddingTop="40dp"
+        android:layout_below="@+id/controlOption"
+        android:background="@android:color/transparent"
+        android:text="TILT" 
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:textColor="@drawable/button_text_color"
+        />
+     <TextView
+        android:id="@+id/controlOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:shadowColor="#0040FF"
+         android:shadowDx="3"
+         android:shadowDy="3"
+         android:shadowRadius="10"
+        android:layout_marginTop="50dp"
+        android:background="@android:color/transparent"
+        android:text="CONTROL OPTION" 
+        android:textStyle="bold"
+        android:textSize="30dp"
+        android:textColor="@drawable/button_text_color"
+        />
+     
+     <Button
+        android:id="@+id/moveByTouch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/moveByAcc"
+        android:background="@android:color/transparent"
+        android:text="TOUCH" 
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:paddingTop="30dp"
+        android:textColor="@drawable/button_text_color"
+        />
+      
+     <Button
+        android:id="@+id/backFromOptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/moveByTouch"
+        android:shadowColor="#0040FF"
+         android:shadowDx="3"
+         android:shadowDy="3"
+         android:shadowRadius="10"
+        android:background="@android:color/transparent"
+        android:text="BACK" 
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:paddingTop="40dp"
+        android:textColor="@drawable/button_text_color"
+        />
+
+     <TextView
+         android:id="@+id/selector1"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBottom="@+id/moveByAcc"
+         android:layout_toLeftOf="@+id/moveByAcc"
+         android:text=">"
+         android:textSize="20dp"
+         android:textStyle="bold" 
+         android:textColor = "#FF0000"
+         />
+      <TextView
+         android:id="@+id/selector2"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBottom="@+id/moveByTouch"
+         android:layout_toLeftOf="@+id/moveByTouch"
+         android:text=">"
+         android:textSize="20dp"
+         android:textStyle="bold" 
+         android:textColor = "#FF0000"
+         />
+
+</RelativeLayout>

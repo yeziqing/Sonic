@@ -1,0 +1,82 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background = "@drawable/wallpaper3">
+
+    
+    
+    <Button
+        android:id="@+id/scores"
+        android:text="SCORES" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingBottom="10dp"
+        android:shadowColor="#0040FF"
+         android:shadowDx="3"
+         android:shadowDy="3"
+         android:shadowRadius="10"
+        android:paddingTop="10dp"
+        android:background="@android:color/transparent"
+        android:textStyle="bold"
+        android:textSize="30dp"
+        android:textColor="@drawable/button_text_color"
+       
+        />
+    
+     <Button
+        android:id="@+id/options"
+        android:text="OPTIONS" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:shadowColor="#0040FF"
+         android:shadowDx="3"
+         android:shadowDy="3"
+         android:shadowRadius="10"
+        android:background="@android:color/transparent"
+        android:textStyle="bold"
+        android:textSize="30dp"
+        android:textColor="@drawable/button_text_color"
+        android:layout_above="@+id/scores"
+        />
+
+     <Button
+         android:id="@+id/start"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/options"
+         android:layout_centerHorizontal="true"
+         android:background="@android:color/transparent"
+         android:paddingBottom="10dp"
+         android:shadowColor="#0040FF"
+         android:shadowDx="3"
+         android:shadowDy="3"
+         android:shadowRadius="10"
+         android:text="START"
+         android:textColor="@drawable/button_text_color"
+         android:textSize="30dp"
+         android:textStyle="bold" />
+     
+     <Button
+        android:id="@+id/exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="10dp"
+        android:shadowColor="#0040FF"
+         android:shadowDx="3"
+         android:shadowDy="3"
+         android:shadowRadius="10"
+        android:layout_below="@+id/scores"
+        android:background="@android:color/transparent"
+        android:text="EXIT" 
+        android:textStyle="bold"
+        android:textSize="30dp"
+        android:textColor="@drawable/button_text_color"
+        />
+
+</RelativeLayout>
