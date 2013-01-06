@@ -1,20 +1,33 @@
 package com.steven.sonic.soniccatch;
 
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.annotation.TargetApi;
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.view.Menu;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,7 +35,13 @@ public class SimpleList extends ListActivity {
 
 	int i = 0;
 	int dbElements = 0;
-	String[] tempArr = new String[100];//WARNING: This limits db label's size to 100 elements
+	boolean dataSetChanged = false;
+	//String[] tempArr = new String[100];//WARNING: This limits db label's size to 100 elements
+	String selectedFromList;
+	ArrayAdapter <String> adapter;
+	String[] arr = new String[0];
+	ListView lv;
+	
 	@TargetApi(11)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +63,9 @@ public class SimpleList extends ListActivity {
 			e.printStackTrace();
 		}
 		
-		String arr[] = new String[dbElements];
+		//String arr[] = new String[dbElements];
+		
+		arr = new String[dbElements];
 		
 		try {//Write file's data into an array
 			FileInputStream fIn2 = openFileInput("ScoreDatabase.txt");
@@ -60,21 +81,98 @@ public class SimpleList extends ListActivity {
 			e.printStackTrace();
 		}
 		
-		setListAdapter(new ArrayAdapter <String>(this, android.R.layout.simple_list_item_1, arr)); //create array adapter of type String
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //Set fullscreen mode, removes the notification bar.
+		//lv = (ListView) findViewById(R.id.MyListView);
+		//lv.setAdapter(new ArrayAdapter <String>(this, android.R.layout.simple_list_item_1, arr)); //create array adapter of type String
+		
+		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arr);
+		setListAdapter(adapter);
+
+		lv = getListView();
+		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> adapterView, View arg1, int pos, long id) {
+            	selectedFromList = arr[pos];
+            	registerForContextMenu(adapterView);
+                return false;
+            }
+        }); 
+		
 		 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 	            getActionBar().setDisplayHomeAsUpEnabled(true);
 	        }
-		tempArr = arr;
+		//tempArr = arr;
 		
-		String testString = Integer.toString(dbElements);
-		Toast.makeText(getApplicationContext(), testString + " scores found!", Toast.LENGTH_SHORT).show();
+		 if (dbElements == 0) Toast.makeText(getApplicationContext(), "No saved scores were found :(", Toast.LENGTH_SHORT).show();
+		 else Toast.makeText(getApplicationContext(), "Press and hold an item for more options...", Toast.LENGTH_LONG).show();
+		//String testString = Integer.toString(dbElements); //for debugging
+		//Toast.makeText(getApplicationContext(), testString + " saved scores found!", Toast.LENGTH_SHORT).show(); //for debugging
 	}
+	
+	public void deleteFromList() {
+		dbElements--;
+		arr = new String[dbElements];
+		int d = 0;
+		try {//Write file's data into an array, EXCLUDING the item selected for deletion
+			FileInputStream fIn = openFileInput("ScoreDatabase.txt");
+			Scanner s = new Scanner(fIn); // Scanner that scans the input file
+			s.useDelimiter(";");
+			
+			while (s.hasNext()) {
+				String word = s.next();
+
+				int x = word.compareTo(selectedFromList);
+				if (x != 0) {
+					arr[d] = word;
+					d++;
+				}
+				else if (x == 0) {
+					Toast.makeText(this, "FOUND AND SKIPPED",Toast.LENGTH_SHORT).show();
+				}
+				//Toast.makeText(getApplicationContext(), "|"+selectedFromList+"|", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getApplicationContext(), "|"+arr[d]+"|", Toast.LENGTH_SHORT).show();
+			}
+			
+			reloadListIntoDatabase(Concatenate(arr,dbElements), "ScoreDatabase.txt");
+			s.close();
+		}	catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		//((BaseAdapter) lv.getAdapter()).notifyDataSetChanged();
+	}
+	
+	
+	public String Concatenate(String[] arr, int size) {
+		int i;
+		StringBuilder mySB = new StringBuilder(100);
+		for (i = 0; i < size; i++) {
+			mySB.append((arr[i]) + ";");
+		}
+		return mySB.toString();
+		
+	}
+	
+	
+	public void reloadListIntoDatabase(String str, String fileName){
+		try{
+			FileOutputStream ffOut = openFileOutput(fileName, MODE_PRIVATE); //Write data to end of existing file
+			OutputStreamWriter fows = new OutputStreamWriter(ffOut);
+			fows.write(str);
+			fows.flush();
+			fows.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 
 	@Override
-	//When an item is selected, the position number is corresponded to the database's array index. The data is used for some other stuff in LoadScores.java
+	//When an item is (short) clicked, the position number is corresponded to the database's array index. The data is used for some other stuff in LoadScores.java
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		GameVariables.selectedSuffix = tempArr[position];
+		GameVariables.selectedSuffix = arr[position];
 		Intent myIntent = new Intent (SimpleList.this, LoadScores.class);
 		startActivity(myIntent);
 	}
@@ -95,5 +193,88 @@ public class SimpleList extends ListActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	
+	@Override
+	//Create context menu 
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		menu.setHeaderTitle(selectedFromList);
+		menu.add(0, v.getId(), 0, "Share");
+		menu.add(0, v.getId(), 0, "Delete");
+		menu.add(0, v.getId(), 0, "Fire Ze Missle!");
+	}
+	
+	@Override
+	//Setup what each item in context menu does
+	public boolean onContextItemSelected(MenuItem item) {
+		if (item.getTitle() == "Share") {
+			Toast.makeText(getApplicationContext(), "Sharing...", Toast.LENGTH_SHORT).show();
+		} else if (item.getTitle() == "Delete") {
+			createDialog(); //Deletion confirmation dialog
+		} else if (item.getTitle() == "Fire Ze Missle!") {
+			Toast.makeText(getApplicationContext(), "Firing Missle...", Toast.LENGTH_SHORT).show();
+		} else {
+			return false;
+		}
+		return true;
+	}
+	
+	//Deletion confirmation dialog
+	public void createDialog() {
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+	    //final EditText input = new EditText(this);
+	    alert.setTitle(selectedFromList);
+	    alert.setMessage("Are you sure?");
+	    //alert.setView(input);
+	    alert.setPositiveButton("Yes!", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {	
+	        	//Toast.makeText(getApplicationContext(), "Deleting...", Toast.LENGTH_SHORT).show();
+	        	deleteFromList();
+	        	deleteFiles("x"+selectedFromList);
+	        	deleteFiles("y"+selectedFromList);
+	        	reloadActivity();
+	        	//adapter.getAdapter().notifyDataSetChanged();
+	        	//adapter.notifyDataSetInvalidated();
+	        }
+	    });
+	    alert.setNegativeButton("No Wait!",
+	            new DialogInterface.OnClickListener() {
+	                public void onClick(DialogInterface dialog, int whichButton) {
+	                    dialog.cancel();
+	                }
+	            });
+	    alert.show();
+	}
+	
+	protected void reloadActivity() {
+		Intent intentReloadThisActivity = new Intent(SimpleList.this, SimpleList.class);
+		startActivity(intentReloadThisActivity);
+		finish();
+	}
 
+	protected void deleteFiles(String FILENAME) {
+		// TODO Auto-generated method stub
+		File myFile = getBaseContext().getFileStreamPath(FILENAME);
+		
+		/*if(myFile.exists()){ //for bugging if file exits or was deleted
+			Toast.makeText(getApplicationContext(), "File to be deleted is found", Toast.LENGTH_SHORT).show();
+		}*/
+		myFile.delete();	
+		/*if(!myFile.exists()){ //for bugging if file exits or was deleted
+			Toast.makeText(getApplicationContext(), "File has been deleted!!", Toast.LENGTH_SHORT).show();
+		}*/
+	}
+
+	//Pressing back button goes to main menu
+	@Override
+	public void onBackPressed() {
+		Intent intent_MainActivity = new Intent (this, MainActivity.class);
+		startActivity(intent_MainActivity);
+		finish();
+	}
+	
+	
+	
 }

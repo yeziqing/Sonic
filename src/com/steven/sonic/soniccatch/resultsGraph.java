@@ -28,6 +28,7 @@ import java.util.Date;
 
 public class resultsGraph extends Activity {
 
+	boolean currentSessionScoresSaved = false;
 	
 	@TargetApi(11)	
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,8 @@ public class resultsGraph extends Activity {
 		// Remove title bar
 		//this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// Remove notification bar
-		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		//this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		
 
 		//Intent intent_resltsGraph = getIntent(); // gets the intent
 
@@ -47,6 +49,7 @@ public class resultsGraph extends Activity {
 		//ConvertToLog(GameVariables.yRaw); //convert to log10
 		
 		GraphView newGraph = new GraphView(this, GameVariables.xRaw, GameVariables.yRaw, "This is an Audiogram", GameVariables.horlabels, GameVariables.verlabels, GraphView.LINE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //Set fullscreen mode, removes the notification bar.
 		
 		setContentView(newGraph);
 		
@@ -152,20 +155,21 @@ public class resultsGraph extends Activity {
 
 		int derp = e2.getAction();
 
-		if (derp == MotionEvent.ACTION_DOWN) {
+		if (derp == MotionEvent.ACTION_DOWN && currentSessionScoresSaved == false) {
 			
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);  
 			AlertDialog.Builder alert = new AlertDialog.Builder(this);
 		    final EditText input = new EditText(this);
-		    alert.setTitle("Save Scores");
+		    alert.setTitle("Save Your Scores");
 		    alert.setMessage("Enter your name...");
 		    alert.setView(input);
 		    alert.setPositiveButton("Save", new DialogInterface.OnClickListener() {
 		        public void onClick(DialogInterface dialog, int whichButton) {
 		            String userName = input.getText().toString().trim();
 		            String currentDateTimeString = "("+DateFormat.getDateTimeInstance().format(new Date())+")";
-		            Toast.makeText(getApplicationContext(), userName + " " + currentDateTimeString, Toast.LENGTH_LONG).show();
+		           // Toast.makeText(getApplicationContext(), userName + " " + currentDateTimeString, Toast.LENGTH_LONG).show();
+		            Toast.makeText(getApplicationContext(), "Saving...", Toast.LENGTH_SHORT).show();
 		            String scoreSuffix = userName + " " + currentDateTimeString;
 		            
 		            SaveScoreSuffix(userName + " " + currentDateTimeString, "ScoreDatabase.txt");
@@ -173,14 +177,16 @@ public class resultsGraph extends Activity {
 					SaveData(Concatenate(GameVariables.yRaw), false, "y"+scoreSuffix);//write y data to file
 		        }
 		    });
-		    alert.setNegativeButton("Cancel",
-		            new DialogInterface.OnClickListener() {
+		    alert.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
 		                public void onClick(DialogInterface dialog, int whichButton) {
 		                    dialog.cancel();
 		                }
 		            });
 		    alert.show();
+		    currentSessionScoresSaved = true; //indicate current session's score has been saved 
 		}
+		else if (derp == MotionEvent.ACTION_DOWN && currentSessionScoresSaved == true)
+			Toast.makeText(getApplicationContext(), "Scores have already been saved...", Toast.LENGTH_LONG).show();
 		return false;
 	}
 	
@@ -223,20 +229,26 @@ public class resultsGraph extends Activity {
 		Intent intent_SimpleList = new Intent (this, SimpleList.class);
 		startActivity(intent_SimpleList);
 		finish();
+		GameVariables.ResetAfterResults(); //reset game lives and other data
+		GameVariables.xRaw = new float[100]; //reset the scores
+		GameVariables.yRaw = new float[100];
+		GameVariables.isRunning = 1; // set game to be is running
 	}
 	
+	// This is called when the Home (Up) button is pressed in the Action Bar.
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			// This is called when the Home (Up) button is pressed
-			// in the Action Bar.
+			
 			Intent parentActivityIntent = new Intent(this, SimpleList.class);
 			parentActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 					| Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(parentActivityIntent);
 			finish();
-			GameVariables.ResetAfterResults();
+			GameVariables.ResetAfterResults(); //reset game lives and other data
+			GameVariables.xRaw = new float[100]; //reset the scores
+			GameVariables.yRaw = new float[100];
 			GameVariables.isRunning = 1; // set game to be is running
 			return true;
 		}

@@ -122,7 +122,6 @@ public class MainActivity extends Activity{
     }
 
 	private void InitializeOptions() {
-		// TODO Auto-generated method stub
 		SharedPreferences settings = getSharedPreferences("OptionsFile", 0);
         final SharedPreferences.Editor editor = settings.edit();
         
@@ -135,9 +134,6 @@ public class MainActivity extends Activity{
         }
 		
 	}
-
-	
-
 
 
 

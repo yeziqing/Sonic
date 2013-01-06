@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -32,10 +33,14 @@ public class LoadScores extends Activity{
 		//xRaw1 = LoadData("score_tab2_x.txt");
 		//yRaw1 = LoadData("score_tab2_y.txt");
 		
+		//Append the corresponding coordinate type to the front of the suffix name, in order to identify the corresponding file names to be loaded.
 		xRaw1 = LoadData("x"+GameVariables.selectedSuffix);
 		yRaw1 = LoadData("y"+GameVariables.selectedSuffix);
 		
-		GraphView myGraph = new GraphView(this, xRaw1, yRaw1, "Saved Scores for "+GameVariables.selectedSuffix, GameVariables.horlabels, GameVariables.verlabels, GraphView.LINE);
+		setTitle("Saved Scores for "+GameVariables.selectedSuffix); //set the title on the action bar to be this
+		GraphView myGraph = new GraphView(this, xRaw1, yRaw1, "Audiogram", GameVariables.horlabels, GameVariables.verlabels, GraphView.LINE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //Set fullscreen mode, removes the notification bar.
+		
 		setContentView(myGraph);
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -52,10 +57,10 @@ public class LoadScores extends Activity{
 			Scanner s = new Scanner(fIn); // Scanner that scans the input file
 			int i = 0;
 			// StringBuilder mySB = new StringBuilder(100);
-			File file = getBaseContext().getFileStreamPath(FILENAME);
+			/*File file = getBaseContext().getFileStreamPath(FILENAME);
 			if(file.exists()){
 				Toast.makeText(getApplicationContext(), "msg msg", Toast.LENGTH_SHORT).show();
-			}
+			}*/
 			
 			while (s.hasNext()) {
 				String word = s.next();
