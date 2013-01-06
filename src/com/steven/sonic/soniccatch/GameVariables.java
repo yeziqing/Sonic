@@ -49,6 +49,7 @@ public class GameVariables extends Activity{
     public static boolean controlMethod = true; //default is tilt
     public static boolean writeEnable = false;
     public static int touchY;
+    public static String selectedSuffix;
     
 	public static void ResetAfterResults () {
 

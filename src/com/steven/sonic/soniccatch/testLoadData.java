@@ -20,7 +20,7 @@ import android.widget.EditText;
 public class testLoadData extends Activity {
 	public String TESTSTRING = "1989 98203.12 2131.39 123.12 23232.01 0970.98";
 	public StringBuilder mySB = new StringBuilder(100);
-	public float[] yRaw = new float[100];
+	public String[] yRaw = new String[100];
 	
 	
 	@Override
@@ -92,19 +92,19 @@ public class testLoadData extends Activity {
 		
 		try {
 		EditText et3 = (EditText) findViewById(R.id.editText3);
-		FileInputStream fIn = openFileInput("score_tab2_y.txt");
+		FileInputStream fIn = openFileInput("ScoreDatabase.txt");
 		Scanner s = new Scanner(fIn);
 		int i = 0;
 		
 		    while (s.hasNext()) {
 		        String word = s.next();
 		        mySB.append(word);
-		        yRaw[i] = Float.valueOf(word);
+		        yRaw[i] = word;
 		        
 		        //if (yRaw[i]<= 0){
 		        	//yRaw[i] = 0;
 				//}
-		        et3.append(Float.toString(yRaw[i]) + " ");
+		        et3.append(yRaw[i] + " ");
 		        i++;
 		        
 		    }

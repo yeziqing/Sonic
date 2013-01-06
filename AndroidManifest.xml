@@ -71,6 +71,19 @@
                 android:value="com.steven.sonic.soniccatch.MainActivity" />
          </activity>
          
+         <activity
+            android:name=".SimpleList"
+            android:label="Saved Scores" 
+            android:screenOrientation="landscape">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.steven.sonic.soniccatch.MainActivity" />
+         </activity>
+         
+         
+         
+        
+         
     </application>
 
 </manifest>

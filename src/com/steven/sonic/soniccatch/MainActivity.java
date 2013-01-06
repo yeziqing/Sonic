@@ -2,6 +2,10 @@ package com.steven.sonic.soniccatch;
 
 
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.app.Activity;
@@ -98,7 +102,7 @@ public class MainActivity extends Activity{
 			public void onClick(View view) {
 				
 				GameVariables.writeEnable = false;
-				Intent intentLoadScores = new Intent (MainActivity.this, Scores.class);
+				Intent intentLoadScores = new Intent (MainActivity.this, SimpleList.class);
 				startActivity(intentLoadScores);
 			}
 		});
@@ -132,7 +136,7 @@ public class MainActivity extends Activity{
 		
 	}
 
-
+	
 
 
 

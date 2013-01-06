@@ -641,7 +641,7 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 		//setting that object as setContentView allows me to display the graph
 		GameVariables.writeEnable = true;
 		Context context = getContext(); // from MySurfaceView/Activity
-		Intent intent_scores = new Intent(context, Scores.class);
+		Intent intent_scores = new Intent(context, resultsGraph.class);
 		context.startActivity(intent_scores);
 	    gameLoopThread.setRunning(false);
         gameLoopThread.interrupt();
