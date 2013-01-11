@@ -112,8 +112,9 @@ public class MainActivity extends Activity{
         	
         	public void onClick(View view) {
         		//finish();
-        		Intent intent1 = new Intent (MainActivity.this, testLoadData.class);
-				startActivity(intent1);
+        		//Intent intent1 = new Intent (MainActivity.this, testLoadData.class); //for debugging page
+				//startActivity(intent1);
+        		finish();
         	}
         });
         

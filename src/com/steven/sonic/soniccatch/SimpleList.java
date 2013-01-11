@@ -89,6 +89,7 @@ public class SimpleList extends ListActivity {
 		setListAdapter(adapter);
 
 		lv = getListView();
+		//lv.setBackgroundColor(15790320);
 		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> adapterView, View arg1, int pos, long id) {
             	selectedFromList = arr[pos];
