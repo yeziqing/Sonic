@@ -160,8 +160,9 @@ public class GameStart extends Activity{
 			//}
 			break;
 		case 1:
-			Toast.makeText(GameStart.this, "button2 Selected",Toast.LENGTH_LONG).show();
+			//Toast.makeText(GameStart.this, "button2 Selected",Toast.LENGTH_LONG).show();
 			GameView.gameLoopThread.setRunning(false);
+			GameVariables.soundPlayed = 0;
 			finish();
 			break;
 		}
@@ -170,9 +171,9 @@ public class GameStart extends Activity{
 	
 	//over ride the back button to do nothing if pressed
 	//prevents users from exiting by accident
-	//@Override
-	//public void onBackPressed() {
-	//}
+	@Override
+	public void onBackPressed() {
+	}
 
 
 
