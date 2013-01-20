@@ -1150,6 +1150,301 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 		canvas.drawPath(lines, edges);
 
 	}
+	
+	public void drawHelper(Canvas canvas){
+		Paint helperPaint = new Paint();
+		Path helperLine = new Path();
+		helperPaint.setStyle(Paint.Style.FILL);
+		if (GameVariables.level == 2){
+			helperPaint.setColor(0xFF0000FF);
+			//canvas.drawRect(0, height-20, GameVariables.divide[2], height, middle);
+
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+
+			helperLine.moveTo(0,height-1);
+			helperLine.lineTo(centerx-100 + (200/2)*0, centery+100);
+			helperLine.lineTo(centerx-100 + (200/2)*1, centery+100);
+			helperLine.lineTo(GameVariables.divide[2], height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFFFF0000);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[2],height-1);
+			helperLine.lineTo(centerx-100 + (200/2)*1, centery+100);
+			helperLine.lineTo(centerx-100 + (200/2)*2, centery+100);
+			helperLine.lineTo(GameVariables.divide[2]*2, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			//canvas.drawRect(GameVariables.divide[2], height-20, 2*GameVariables.divide[2], height, middle);
+		}
+		else if (GameVariables.level == 3){
+			helperPaint.setColor(0xFF0000FF);
+			//canvas.drawRect(0, height-20, GameVariables.divide[3], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+
+			helperLine.moveTo(0,height-1);
+			helperLine.lineTo(centerx-100 + (200/3)*0, centery+100);
+			helperLine.lineTo(centerx-100 + (200/3)*1, centery+100);
+			helperLine.lineTo(GameVariables.divide[3], height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+		
+			helperPaint.setColor(0xFF00FF00);
+			//canvas.drawRect(GameVariables.divide[3], height-20, 2*GameVariables.divide[3], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[3], height-1);
+			helperLine.lineTo(centerx-100 + (200/3)*1, centery+100);
+			helperLine.lineTo(centerx-100 + (200/3)*2, centery+100);
+			helperLine.lineTo(GameVariables.divide[3]*2, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			
+			helperPaint.setColor(0xFFFF0000);
+			//canvas.drawRect(2*GameVariables.divide[3], height-20, 3*GameVariables.divide[3], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[3]*2, height-1);
+			helperLine.lineTo(centerx-100 + (200/3)*2, centery+100);
+			helperLine.lineTo(centerx-100 + (200/3)*3, centery+100);
+			helperLine.lineTo(GameVariables.divide[3]*3, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+		}
+		else if (GameVariables.level == 4){
+			helperPaint.setColor(0xFF0000FF);
+			//canvas.drawRect(0, height-20, GameVariables.divide[4], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[4]*0, height-1);
+			helperLine.lineTo(centerx-100 + (200/4)*0, centery+100);
+			helperLine.lineTo(centerx-100 + (200/4)*1, centery+100);
+			helperLine.lineTo(GameVariables.divide[4]*1, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFF00FFFF);
+			//canvas.drawRect(GameVariables.divide[4], height-20, 2*GameVariables.divide[4], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[4]*1, height-1);
+			helperLine.lineTo(centerx-100 + (200/4)*1, centery+100);
+			helperLine.lineTo(centerx-100 + (200/4)*2, centery+100);
+			helperLine.lineTo(GameVariables.divide[4]*2, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFFFFFF00);
+			//canvas.drawRect(2*GameVariables.divide[4], height-20, 3*GameVariables.divide[4], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[4]*2, height-1);
+			helperLine.lineTo(centerx-100 + (200/4)*2, centery+100);
+			helperLine.lineTo(centerx-100 + (200/4)*3, centery+100);
+			helperLine.lineTo(GameVariables.divide[4]*3, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFFFF0000);
+			//canvas.drawRect(3*GameVariables.divide[4], height-20, 4*GameVariables.divide[4], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[4]*3, height-1);
+			helperLine.lineTo(centerx-100 + (200/4)*3, centery+100);
+			helperLine.lineTo(centerx-100 + (200/4)*4, centery+100);
+			helperLine.lineTo(GameVariables.divide[4]*4, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+		}
+		else if (GameVariables.level == 5){
+			helperPaint.setColor(0xFF0000FF);
+			canvas.drawRect(0, height-20, GameVariables.divide[5], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[5]*0, height-1);
+			helperLine.lineTo(centerx-100 + (200/5)*0, centery+100);
+			helperLine.lineTo(centerx-100 + (200/5)*1, centery+100);
+			helperLine.lineTo(GameVariables.divide[5]*1, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFF00FFFF);
+			//canvas.drawRect(GameVariables.divide[5], height-20, 2*GameVariables.divide[5], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[5]*1, height-1);
+			helperLine.lineTo(centerx-100 + (200/5)*1, centery+100);
+			helperLine.lineTo(centerx-100 + (200/5)*2, centery+100);
+			helperLine.lineTo(GameVariables.divide[5]*2, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFF00FF00);
+			//canvas.drawRect(2*GameVariables.divide[5], height-20, 3*GameVariables.divide[5], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[5]*2, height-1);
+			helperLine.lineTo(centerx-100 + (200/5)*2, centery+100);
+			helperLine.lineTo(centerx-100 + (200/5)*3, centery+100);
+			helperLine.lineTo(GameVariables.divide[5]*3, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFFFFFF00);
+			//canvas.drawRect(3*GameVariables.divide[5], height-20, 4*GameVariables.divide[5], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[5]*3, height-1);
+			helperLine.lineTo(centerx-100 + (200/5)*3, centery+100);
+			helperLine.lineTo(centerx-100 + (200/5)*4, centery+100);
+			helperLine.lineTo(GameVariables.divide[5]*4, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFFFF0000);
+			//canvas.drawRect(4*GameVariables.divide[5], height-20, 5*GameVariables.divide[5], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[5]*4, height-1);
+			helperLine.lineTo(centerx-100 + (200/5)*4, centery+100);
+			helperLine.lineTo(centerx-100 + (200/5)*5, centery+100);
+			helperLine.lineTo(GameVariables.divide[5]*5, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+		}
+		else if (GameVariables.level == 6){
+			helperPaint.setColor(0xFF0000FF);
+			//canvas.drawRect(0, height-20, GameVariables.divide[6], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[6]*0, height-1);
+			helperLine.lineTo(centerx-100 + (200/6)*0, centery+100);
+			helperLine.lineTo(centerx-100 + (200/6)*1, centery+100);
+			helperLine.lineTo(GameVariables.divide[6]*1, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFF0099FF);
+			//canvas.drawRect(GameVariables.divide[6], height-20, 2*GameVariables.divide[6], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[6]*1, height-1);
+			helperLine.lineTo(centerx-100 + (200/6)*1, centery+100);
+			helperLine.lineTo(centerx-100 + (200/6)*2, centery+100);
+			helperLine.lineTo(GameVariables.divide[6]*2, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFF00FFFF);
+			//canvas.drawRect(2*GameVariables.divide[6], height-20, 3*GameVariables.divide[6], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[6]*2, height-1);
+			helperLine.lineTo(centerx-100 + (200/6)*2, centery+100);
+			helperLine.lineTo(centerx-100 + (200/6)*3, centery+100);
+			helperLine.lineTo(GameVariables.divide[6]*3, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFF00FF00);
+			//canvas.drawRect(3*GameVariables.divide[6], height-20, 4*GameVariables.divide[6], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[6]*3, height-1);
+			helperLine.lineTo(centerx-100 + (200/6)*3, centery+100);
+			helperLine.lineTo(centerx-100 + (200/6)*4, centery+100);
+			helperLine.lineTo(GameVariables.divide[6]*4, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFFFFFF00);
+			//canvas.drawRect(4*GameVariables.divide[6], height-20, 5*GameVariables.divide[6], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[6]*4, height-1);
+			helperLine.lineTo(centerx-100 + (200/6)*4, centery+100);
+			helperLine.lineTo(centerx-100 + (200/6)*5, centery+100);
+			helperLine.lineTo(GameVariables.divide[6]*5, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFFFF0000);
+			//canvas.drawRect(5*GameVariables.divide[6], height-20, 6*GameVariables.divide[6], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[6]*5, height-1);
+			helperLine.lineTo(centerx-100 + (200/6)*5, centery+100);
+			helperLine.lineTo(centerx-100 + (200/6)*6, centery+100);
+			helperLine.lineTo(GameVariables.divide[6]*6, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+		}
+		else if (GameVariables.level == 7){
+			helperPaint.setColor(0xFF0000FF);
+			//canvas.drawRect(0, height-20, GameVariables.divide[7], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[7]*0, height-1);
+			helperLine.lineTo(centerx-100 + (200/7)*0, centery+100);
+			helperLine.lineTo(centerx-100 + (200/7)*1, centery+100);
+			helperLine.lineTo(GameVariables.divide[7]*1, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFF0099FF);
+			//canvas.drawRect(GameVariables.divide[7], height-20, 2*GameVariables.divide[7], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[7]*1, height-1);
+			helperLine.lineTo(centerx-100 + (200/7)*1, centery+100);
+			helperLine.lineTo(centerx-100 + (200/7)*2, centery+100);
+			helperLine.lineTo(GameVariables.divide[7]*2, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFF00FFFF);
+			//canvas.drawRect(2*GameVariables.divide[7], height-20, 3*GameVariables.divide[7], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[7]*2, height-1);
+			helperLine.lineTo(centerx-100 + (200/7)*2, centery+100);
+			helperLine.lineTo(centerx-100 + (200/7)*3, centery+100);
+			helperLine.lineTo(GameVariables.divide[7]*3, height-1);			
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFF00FF00);
+			//canvas.drawRect(3*GameVariables.divide[7], height-20, 4*GameVariables.divide[7], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[7]*3, height-1);
+			helperLine.lineTo(centerx-100 + (200/7)*3, centery+100);
+			helperLine.lineTo(centerx-100 + (200/7)*4, centery+100);
+			helperLine.lineTo(GameVariables.divide[7]*4, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFFFFFF00);
+			//canvas.drawRect(4*GameVariables.divide[7], height-20, 5*GameVariables.divide[7], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[7]*4, height-1);
+			helperLine.lineTo(centerx-100 + (200/7)*4, centery+100);
+			helperLine.lineTo(centerx-100 + (200/7)*5, centery+100);
+			helperLine.lineTo(GameVariables.divide[7]*5, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFFFF9900);
+			//canvas.drawRect(5*GameVariables.divide[7], height-20, 6*GameVariables.divide[7], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[7]*5, height-1);
+			helperLine.lineTo(centerx-100 + (200/7)*5, centery+100);
+			helperLine.lineTo(centerx-100 + (200/7)*6, centery+100);
+			helperLine.lineTo(GameVariables.divide[7]*6, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+			helperPaint.setColor(0xFFFF0000);
+			//canvas.drawRect(6*GameVariables.divide[7], height-20, 7*GameVariables.divide[7], height, middle);
+			helperPaint.setStyle(Paint.Style.FILL);
+			helperPaint.setAlpha(100);
+			helperLine.moveTo(GameVariables.divide[7]*6, height-1);
+			helperLine.lineTo(centerx-100 + (200/7)*6, centery+100);
+			helperLine.lineTo(centerx-100 + (200/7)*7, centery+100);
+			helperLine.lineTo(GameVariables.divide[7]*7, height-1);
+			canvas.drawPath(helperLine, helperPaint);
+			helperLine.reset();
+		}
+	}
+	
+	/*
 	public void drawHelper(Canvas canvas){
 		middle.setStyle(Paint.Style.FILL);
 		if (GameVariables.level == 2){
@@ -1219,7 +1514,7 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 			middle.setColor(0xFFFF0000);
 			canvas.drawRect(6*GameVariables.divide[7], height-20, 7*GameVariables.divide[7], height, middle);
 		}
-	}
+	}*/
 	public void drawBox(Canvas canvas){
 		if (shot_fired == 1){
 			edges.setAlpha(100);
