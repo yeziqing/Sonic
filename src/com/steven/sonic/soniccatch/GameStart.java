@@ -59,7 +59,7 @@ public class GameStart extends Activity{
         }*/
         GameView.gameLoopThread.onPause();
         
-        GameView.redhit.recycle();
+       // GameView.redhit.recycle();
        
         
     }

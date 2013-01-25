@@ -14,7 +14,7 @@ public class GameLoopThread extends Thread {
 	private boolean mPaused;
 	private boolean mFinished;
 
-	//AudioTrack track;
+	AudioTrack track;
 	static final long FPS = 60;
 	private GameView view;
 	private GraphView myGraph;
@@ -84,6 +84,7 @@ public class GameLoopThread extends Thread {
                         	 //play sound thread
                         	   final Thread thread = new Thread(new Runnable() {
                                    public void run() {
+                                	  
                                        genTone2();
                                        handler.post(new Runnable() {
 
@@ -94,7 +95,9 @@ public class GameLoopThread extends Thread {
                                    }
                                });
                                thread.start();
+                             
                            }
+                          
                            if (GameVariables.levelchange == 0){
                         	   	GameVariables.level++;
                         	   	GameVariables.levelchange = GameVariables.level;
@@ -236,7 +239,7 @@ public class GameLoopThread extends Thread {
 	    }
 	
 	void playSound() {
-		 AudioTrack track = new AudioTrack(AudioManager.STREAM_MUSIC,
+		track = new AudioTrack(AudioManager.STREAM_MUSIC,
 				(int) numSamples, AudioFormat.CHANNEL_CONFIGURATION_MONO,
 				AudioFormat.ENCODING_PCM_16BIT, buffer.length,
 				AudioTrack.MODE_STATIC);
@@ -254,12 +257,22 @@ public class GameLoopThread extends Thread {
 				if (GameVariables.volume == 20) {
 
 					track.pause();
-					track.flush();
+					
 					track.stop();
+					track.flush();
 					//track.release();
 				}
 			}
 			track.play();
+			
+		}
+		if (GameVariables.volume == 20) {
+
+			track.pause();
+			
+			track.stop();
+			track.flush();
+			track.release();
 		}
 	}
 

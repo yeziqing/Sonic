@@ -46,6 +46,7 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 	private float[] mSensorY;
 	private int reboot;
 
+	
 	private Paint p;
 	private Bitmap bg;
 	private Bitmap ship;
@@ -172,6 +173,11 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 		for (i = 2; i < 8; i++){
 			GameVariables.divide[i] = width/i; 
 		}
+		
+		BitmapFactory.Options options=new BitmapFactory.Options();
+		options.inSampleSize = 8;
+		
+		
 		
 		ship = BitmapFactory.decodeResource(getResources(), R.drawable.shipfront);
 		heartfull = BitmapFactory.decodeResource(getResources(), R.drawable.heartfull);
