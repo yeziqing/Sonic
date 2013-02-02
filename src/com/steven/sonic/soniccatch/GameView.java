@@ -48,21 +48,22 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 
 	
 	private Paint p;
-	private Bitmap bg;
-	private Bitmap ship;
-	static Bitmap heartfull;
-	static Bitmap heartempty;
-	static Bitmap redhit;
-	private Bitmap glass;
-	private Bitmap crash;
-	private Bitmap lefthud;
-	private Bitmap righthud;
-	private Bitmap midhud;
-	static Bitmap warninggrey;
-	static Bitmap warningred;
-	private Bitmap thousand;
-	private Bitmap hundred;
-	private Bitmap ten;
+	public static Bitmap bg;
+	public static Bitmap ship;
+	public static Bitmap heartfull;
+	public static Bitmap heartempty;
+	public static Bitmap redhit;
+	public static Bitmap glass;
+	public static Bitmap crash;
+	public static Bitmap lefthud;
+	public static Bitmap righthud;
+	public static Bitmap midhud;
+	public static Bitmap warninggrey;
+	public static Bitmap warningred;
+	public static Bitmap thousand;
+	public static Bitmap hundred;
+	public static Bitmap ten;
+	public static Bitmap tut;
 
 
 
@@ -651,8 +652,33 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 		context.startActivity(intent_scores);
 	    gameLoopThread.setRunning(false);
         gameLoopThread.interrupt();
+        
+       
 		
 	}
+	public static void recycleAllBitmaps() {
+		
+		bg.recycle();
+		ship.recycle();
+		heartfull.recycle();
+		heartempty.recycle();
+		redhit.recycle();
+		glass.recycle();
+		crash.recycle();
+		lefthud.recycle();
+		righthud.recycle();
+		midhud.recycle();
+		warninggrey.recycle();
+		warningred.recycle();
+		thousand.recycle();
+		hundred.recycle();
+		ten.recycle();
+		tut.recycle();
+		
+	}
+
+
+
 	/*
 	 * //moving the character if (x > getWidth() - bmp.getWidth()) { //if
 	 * arrived at right border xSpeed = -1; } if (x == 0) { //if arrived at left
@@ -711,7 +737,7 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 	}
 	
 	public void drawTutorial (Canvas canvas){
-		Bitmap tut;
+		
 		Paint help = new Paint();
 		help.setAlpha(125);
 		canvas.drawRect(0,0,width,height, help);
