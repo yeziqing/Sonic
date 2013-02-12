@@ -8,7 +8,10 @@ import java.util.Scanner;
 
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,9 +32,15 @@ public class MainActivity extends Activity{
 	public boolean paused = false;
 	
 
-    @Override
+   
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        
+        if (GameVariables.s == 1) {
+        	restart(10);
+        }
         
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         
@@ -63,7 +72,7 @@ public class MainActivity extends Activity{
         
         //setContentView(gameView);
         
-        InitializeOptions();
+        InitializeOptions(); //load up the game options data. For now, its just control options.
 
         setContentView(R.layout.activity_main);
         
@@ -82,7 +91,9 @@ public class MainActivity extends Activity{
         bStart.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View view) {
-				
+				GameVariables.story = 0;
+				GameVariables.help = 0;
+				GameVariables.where = 0;
 				Intent intentStart = new Intent (MainActivity.this, GameStart.class);
 				startActivity(intentStart);
 			}
@@ -111,16 +122,27 @@ public class MainActivity extends Activity{
         bExit.setOnClickListener(new View.OnClickListener() {
         	
         	public void onClick(View view) {
+        		GameVariables.story = 1;
+        		GameVariables.help = 1;
+        		GameVariables.where = 1;
+        		Intent intentStart = new Intent (MainActivity.this, GameStart.class);
+				startActivity(intentStart);
         		//finish();
-        		//Intent intent1 = new Intent (MainActivity.this, testLoadData.class); //for debugging page
-				//startActivity(intent1);
-        		finish();
         	}
         });
         
         
         
     }
+	
+	
+	//force restart the app
+	public void restart(int delay) {
+	    PendingIntent intent = PendingIntent.getActivity(this.getBaseContext(), 0, new Intent(getIntent()), getIntent().getFlags());
+	    AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+	    manager.set(AlarmManager.RTC, System.currentTimeMillis() + delay, intent);
+	    System.exit(2);
+	}
 
 	private void InitializeOptions() {
 		SharedPreferences settings = getSharedPreferences("OptionsFile", 0);
@@ -153,6 +175,7 @@ public class MainActivity extends Activity{
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		//recreate();
 	}
 
 
@@ -164,6 +187,7 @@ public class MainActivity extends Activity{
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
+		//finish();
 	}
 
 

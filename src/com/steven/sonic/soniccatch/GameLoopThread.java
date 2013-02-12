@@ -58,7 +58,10 @@ public class GameLoopThread extends Thread {
                            synchronized (view.getHolder()) {
                         	   
                         	   if (GameVariables.isRunning == 1){
-                        		   if (GameVariables.pause == 0){
+                        		   if (GameVariables.help == 1){
+                        			   view.beginning(c);
+                        		   }
+                        		   else if (GameVariables.pause == 0){
                         			   view.generateEnemy(c);
                         			   view.onDraw(c);
                         		   }
@@ -273,6 +276,7 @@ public class GameLoopThread extends Thread {
 			track.stop();
 			track.flush();
 			track.release();
+			System.gc();
 		}
 	}
 

@@ -14,8 +14,11 @@ import java.util.Scanner;
 import android.os.Build;
 import android.os.Bundle;
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.ContextMenu;
@@ -194,6 +197,8 @@ public class SimpleList extends ListActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+
 	
 	
 	@Override

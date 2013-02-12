@@ -250,6 +250,7 @@ public class resultsGraph extends Activity {
 			GameVariables.xRaw = new float[100]; //reset the scores
 			GameVariables.yRaw = new float[100];
 			GameVariables.isRunning = 1; // set game to be is running
+			GameVariables.s = 1; //yes, need to restart app
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

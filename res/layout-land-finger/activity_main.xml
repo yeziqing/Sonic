@@ -73,7 +73,7 @@
          android:shadowRadius="10"
         android:layout_below="@+id/scores"
         android:background="@android:color/transparent"
-        android:text="EXIT" 
+        android:text="TRAINING" 
         android:textStyle="bold"
         android:textSize="30dp"
         android:textColor="@drawable/button_text_color"

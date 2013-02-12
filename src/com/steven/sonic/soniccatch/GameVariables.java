@@ -13,6 +13,8 @@ public class GameVariables extends Activity{
 	static String[] verlabels = new String[] { "100dB", "90dB", "80dB", "70dB","60dB", "50dB", "40dB", "30dB", "20dB", "10dB", "0dB" };
 	static String[] horlabels = new String[] { "0", "1k", "2k", "3k", "4k", "5k","6k", "7k", "8k", "9k", "10k", "11k", "12k", "13k", "14k","15k", "16k" };
 	
+	public static int s = 0; //determine if in need to restarting the app
+	
 	public static int delta = 30;
 	
 	public static Vibrator shock;
@@ -44,6 +46,11 @@ public class GameVariables extends Activity{
     public static int pressAt = 20;
     public static int tutorial = 0;
     public static int pause = 0;
+    public static int help = 1;
+    public static int storytime = 0;
+    public static int story = 0;
+    public static int where = 0; //0:=actually playing, 1:=doing tutorial
+
     
     
     public static boolean controlMethod = true; //default is tilt

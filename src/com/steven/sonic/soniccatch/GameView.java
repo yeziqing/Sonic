@@ -63,6 +63,10 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 	public static Bitmap thousand;
 	public static Bitmap hundred;
 	public static Bitmap ten;
+	public static Bitmap story1;
+	public static Bitmap story2;
+	public static Bitmap story3;
+
 	public static Bitmap tut;
 
 
@@ -84,10 +88,16 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 	private Paint shot = new Paint();
 	private Path shot_path = new Path();
 	
+	private Paint storyPaint = new Paint();
+	private int storyAlpha = 255;
+	private Paint storyFade = new Paint();
+	
 	private SurfaceHolder holder;
 	public static GameLoopThread gameLoopThread;
 	private int xSpeed = 0;
 	
+	private Paint helperPaint = new Paint();
+	private Path helperLine = new Path();
 	
 	private static int centerx;
 	private static int centery;
@@ -107,7 +117,8 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 	private Paint scorePaint = new Paint(); 
 	private Paint heartpaint = new Paint();
 	private int backgroundColour = 0x000000;
-	
+	private int storycount = 0;
+
 	
 	private Random r = new Random();
 	private float[] botSquareStart = new float[26];
@@ -194,6 +205,7 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 		thousand = BitmapFactory.decodeResource(getResources(), R.drawable.thousandzero);
 		hundred = BitmapFactory.decodeResource(getResources(), R.drawable.hundredzero);
 		ten = BitmapFactory.decodeResource(getResources(), R.drawable.tenzero);
+		story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title1);
 
 
 		
@@ -402,7 +414,434 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 		}
 		
 	}
-	
+	protected void beginning(Canvas canvas){
+		GameVariables.storytime+=5;		
+		storyPaint.setStyle(Paint.Style.FILL);
+		storyPaint.setColor(Color.BLACK);
+		canvas.drawRect(0, height-story1.getHeight(), width, height, storyPaint);
+		if (GameVariables.story == 0){
+			story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title1);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			if (GameVariables.storytime <= story1.getWidth()){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+			}
+			else 
+			{
+				if (GameVariables.storytime >= story1.getWidth()+60){
+					GameVariables.storytime = 0;
+					GameVariables.story = 1;
+				}
+			}
+		}	
+		else if (GameVariables.story == 1){
+			story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title2);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			if (GameVariables.storytime <= story1.getWidth()){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+			}
+			else 
+			{
+				if (GameVariables.storytime >= story1.getWidth()+60){
+					GameVariables.storytime = 0;
+					GameVariables.story = 2;
+				}
+			}
+		}
+		else if (GameVariables.story == 2){
+			story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title3);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			if (GameVariables.storytime <= story1.getWidth()){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+			}
+			else 
+			{
+				if (GameVariables.storytime >= story1.getWidth()+60){
+					GameVariables.storytime = 0;
+					GameVariables.story = 3;
+				}
+			}
+		}
+		else if (GameVariables.story == 3){
+			story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title4);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			if (GameVariables.storytime <= story1.getWidth()){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+			}
+			else 
+			{
+				if (GameVariables.storytime >= story1.getWidth() && GameVariables.storytime <= (story1.getWidth()+75)){
+					GameVariables.speedModifier = 3;
+					canvas.drawRect(0, 0, width, height-story1.getHeight(), storyFade);
+					drawBox(canvas);
+					modifyBoxes();
+					canvas.drawRect(0, 0, width, height-story1.getHeight(), storyFade);
+					
+				}
+				else if (GameVariables.storytime > (story1.getWidth()+75)){
+					storyFade.setAlpha(storyAlpha);
+					canvas.drawRect(0, 0, width, height-story1.getHeight(), storyFade);
+					drawBox(canvas);
+					canvas.drawRect(0, 0, width, height-story1.getHeight(), storyFade);
+					storyAlpha-=5;
+				}
+				if (storyAlpha <= 10){
+					storyAlpha = 255;
+					GameVariables.speedModifier = 0;
+					GameVariables.storytime = 0;
+					GameVariables.story = 4;
+				}
+			}
+		}
+		
+		else if (GameVariables.story == 4){
+			story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title5);
+			canvas.drawRect(0, 0, width, height-story1.getHeight(), middle);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			drawBox(canvas);
+			if (GameVariables.storytime <= story1.getWidth()){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+			}
+			else 
+			{
+				if (GameVariables.storytime >= story1.getWidth() && GameVariables.storytime <= 2000){
+					storyFade.setAlpha(storyAlpha);
+					canvas.drawBitmap(ship, ship_x-10, ship_y, null);
+					canvas.drawRect(ship_x-10, ship_y, ship_x-10+ship.getWidth(), ship_y+ship.getHeight(), storyFade);
+					storyAlpha-=4;
+					if (storyAlpha <=6){
+						GameVariables.storytime = 2000;
+					}
+				}
+				else if (GameVariables.storytime >= 2000 && GameVariables.storytime <= 3000){
+					storyFade.setAlpha(storyAlpha);
+					canvas.drawBitmap(ship, ship_x-10, ship_y, null);
+					canvas.drawRect(ship_x-10, ship_y, ship_x-10+ship.getWidth(), ship_y+ship.getHeight(), storyFade);
+					storyAlpha+=4;
+					if (storyAlpha >= 249){
+						GameVariables.storytime = 4000;
+					}
+				}
+				else if (GameVariables.storytime >= 3000 && GameVariables.storytime <= 4000){
+					storyFade.setAlpha(storyAlpha);
+					canvas.drawBitmap(ship, ship_x-10, ship_y, null);
+					canvas.drawRect(ship_x-10, ship_y, ship_x-10+ship.getWidth(), ship_y+ship.getHeight(), storyFade);
+					storyAlpha-=4;
+					if (storyAlpha <= 6){
+						GameVariables.storytime = 4000;
+					}
+				}
+				else if (GameVariables.storytime >= 4000 && GameVariables.storytime <= 5000){
+					storyFade.setAlpha(storyAlpha);
+					canvas.drawBitmap(ship, ship_x-10, ship_y, null);
+					canvas.drawRect(ship_x-10, ship_y, ship_x-10+ship.getWidth(), ship_y+ship.getHeight(), storyFade);
+					storyAlpha+=4;
+					if (storyAlpha >=249){
+						GameVariables.storytime = 5000;
+					}
+				}
+				else if (GameVariables.storytime >= 5000 && GameVariables.storytime <= 6000){
+					storyFade.setAlpha(storyAlpha);
+					canvas.drawBitmap(ship, ship_x-10, ship_y, null);
+					canvas.drawRect(ship_x-10, ship_y, ship_x-10+ship.getWidth(), ship_y+ship.getHeight(), storyFade);
+					storyAlpha-=4;
+					if (storyAlpha <=6){
+						GameVariables.storytime = 6000;
+					}
+				}
+				else if (GameVariables.storytime >= 6000){
+					storyAlpha = 0;
+					GameVariables.storytime = 0;
+					GameVariables.story = 5;
+				}
+			}
+		}
+		else if (GameVariables.story == 5){ // Engine Online
+			story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title6);
+			canvas.drawRect(0, 0, width, height-story1.getHeight(), middle);
+			drawBox(canvas);
+			modifyBoxes();
+			canvas.drawBitmap(ship, ship_x-10, ship_y, null);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+
+			if (GameVariables.storytime <= story1.getWidth()){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), story1.getWidth(), height, storyPaint);
+			}
+			else 
+			{
+				if (GameVariables.storytime >= story1.getWidth() && GameVariables.storytime <= story1.getWidth()+60){
+					GameVariables.speedModifier = 32;
+				}
+				else if (GameVariables.storytime >= story1.getWidth() + 60 && GameVariables.storytime <= story1.getWidth()+120){
+					GameVariables.speedModifier = 16;
+				}
+				else if (GameVariables.storytime >= story1.getWidth() + 120 && GameVariables.storytime <= story1.getWidth()+180){
+					GameVariables.speedModifier = 8;
+				}
+				else if (GameVariables.storytime >= story1.getWidth() + 180 && GameVariables.storytime <= story1.getWidth()+240){
+					GameVariables.speedModifier = 4;
+				}
+				else if (GameVariables.storytime >= story1.getWidth() + 240 && GameVariables.storytime <= story1.getWidth()+300){
+					GameVariables.speedModifier = 2;
+				}
+				else if (GameVariables.storytime >= 300){
+					GameVariables.storytime = 0;
+					GameVariables.story = 6;
+				}
+			}
+		}
+		else if (GameVariables.story == 6){
+			totalSpeed = 0;
+			story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title7);
+			canvas.drawRect(0, 0, width, height-story1.getHeight(), middle);
+			drawBox(canvas);
+			modifyBoxes();
+			canvas.drawBitmap(ship, ship_x-10, ship_y, null);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			if (GameVariables.storytime <= story1.getWidth()){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), story1.getWidth(), height, storyPaint);
+			}
+			else 
+			{
+				if (GameVariables.storytime >= story1.getWidth()){
+					moveShip(GameVariables.controlMethod);
+				}
+				if (GameVariables.storytime < 10000){
+					edges.setColor(Color.RED);
+					edges.setStyle(Paint.Style.STROKE);
+					canvas.drawRect(50, ship_y-10, 100, ship_y+40, edges);
+					if (ship_x < 100){
+						GameVariables.storytime = 10001;
+					}
+				}
+				else if (GameVariables.storytime > 10000 && GameVariables.storytime < 20000){
+					edges.setColor(Color.RED);
+					edges.setStyle(Paint.Style.STROKE);
+					canvas.drawRect(width - 200, ship_y-10, width - 150, ship_y+40, edges);
+					if (ship_x > width - 200){
+						GameVariables.storytime = 20001;
+					}
+				}
+				else if (GameVariables.storytime > 20000)
+				{
+					GameVariables.storytime = 0;
+					GameVariables.story = 7;
+				}
+			}
+		}
+		else if (GameVariables.story == 7){
+			story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title8);
+			canvas.drawRect(0, 0, width, height-story1.getHeight(), middle);
+			drawBox(canvas);
+			modifyBoxes();
+			canvas.drawBitmap(ship, ship_x-10, ship_y, null);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			if (GameVariables.storytime <= story1.getWidth()){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+			}
+			else 
+			{
+				if (GameVariables.storytime >= story1.getWidth()+60 && ship_x >= centerx-50){
+					ship = BitmapFactory.decodeResource(getResources(), R.drawable.shipleft);
+					ship_x-=5;
+					//ship_x = centerx - (ship.getHeight()/2);;
+					//ship_y = height-70;
+				}
+				else if (ship_x <=centerx){
+					//ship = BitmapFactory.decodeResource(getResources(), R.drawable.shipfront);
+					GameVariables.storytime = 0;
+					GameVariables.story = 8;
+					boosting = 0;
+				}
+			}
+		}
+		else if (GameVariables.story == 8){
+			int i;
+
+			int HUDcolor = 0xFFFFFF00; 
+			story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title9);
+			canvas.drawRect(0, 0, width, height-story1.getHeight(), middle);
+			drawBox(canvas);
+			modifyBoxes();
+			canvas.drawBitmap(ship, ship_x-10, ship_y, null);
+			//canvas.drawBitmap(ship, ship_x-10, centery, null);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			if (GameVariables.storytime <= story1.getWidth()){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+			}
+			else 
+			{
+				if (GameVariables.storytime >= story1.getWidth()+60){
+					if (GameVariables.storytime == story1.getWidth()+60){
+						boosting = 0;
+					}
+					storyPaint.setAlpha(175);
+					boosting -= 2;
+					for (i = 0; i < boosting*width/392; i+=2){
+						canvas.drawRect(width/2 + i, 1, width/2 + i + 1 , 19, storyPaint);
+						canvas.drawRect(width/2 - i, 1, width/2 - i - 1 , 19, storyPaint);
+						storyPaint.setColor(HUDcolor);
+						if (HUDcolor != 0xFFFF0000){
+							HUDcolor = HUDcolor - (1 << 8);
+						}
+					}	
+					if (boosting >= 196){
+						GameVariables.storytime = 0;
+						GameVariables.story = 9;
+					}
+				}
+
+			}
+		}
+		else if (GameVariables.story == 9){
+			int i;
+			int HUDcolor = 0xFFFFFF00; 
+			
+			story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title10);
+			canvas.drawRect(0, 0, width, height-story1.getHeight(), middle);
+			drawBox(canvas);
+			modifyBoxes();
+			//ship_y+=100;
+			ship_x+=100;
+			canvas.drawBitmap(ship, ship_x-10, ship_y, null);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			for (i = 0; i < boosting*width/392; i+=2){
+				canvas.drawRect(width/2 + i, 1, width/2 + i + 1 , 19, storyPaint);
+				canvas.drawRect(width/2 - i, 1, width/2 - i - 1 , 19, storyPaint);
+				storyPaint.setColor(HUDcolor);
+				if (HUDcolor != 0xFFFF0000){
+					HUDcolor = HUDcolor - (1 << 8);
+				}
+			}	
+			
+			storyPaint.setColor(Color.BLACK);
+			if (GameVariables.storytime <= story1.getWidth()){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+			}
+			else 
+			{
+				if (GameVariables.storytime >= story1.getWidth()+120){
+					GameVariables.storytime = 0;
+					GameVariables.story = 10;
+				}
+			}
+		}
+		else if (GameVariables.story == 10){
+			int i;
+			int HUDcolor = 0xFFFFFF00; 
+			
+			story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title11);
+			canvas.drawRect(0, 0, width, height-story1.getHeight(), middle);
+			drawBox(canvas);
+			modifyBoxes();
+			canvas.drawBitmap(ship, ship_x-10, ship_y, null);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			for (i = 0; i < boosting*width/392; i+=2){
+				canvas.drawRect(width/2 + i, 1, width/2 + i + 1 , 19, storyPaint);
+				canvas.drawRect(width/2 - i, 1, width/2 - i - 1 , 19, storyPaint);
+				storyPaint.setColor(HUDcolor);
+				if (HUDcolor != 0xFFFF0000){
+					HUDcolor = HUDcolor - (1 << 8);
+				}
+			}	
+			storyPaint.setColor(Color.BLACK);
+			if (GameVariables.storytime <= story1.getWidth()){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+			}
+			else 
+			{
+				if (GameVariables.storytime >= story1.getWidth()+60){
+					if (shot_fired == 1){
+						speedBoost();
+					}
+					if (boosting <=1){
+						GameVariables.speedModifier = 2;
+						GameVariables.storytime = 0;
+						GameVariables.story = 11;
+					}
+				}
+			}
+		}
+		else if (GameVariables.story == 11){
+			int i, j;
+			int HUDcolor = 0xFFFFFF00; 
+			Paint HUDpaint = new Paint();
+			HUDpaint.setAlpha(100);
+			story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title12);
+			canvas.drawRect(0, 0, width, height-story1.getHeight(), middle);
+			drawBox(canvas);
+			modifyBoxes();
+			canvas.drawBitmap(ship, ship_x-10, ship_y, null);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			for (i = 0; i < boosting*width/392; i+=2){
+				canvas.drawRect(width/2 + i, 1, width/2 + i + 1 , 19, storyPaint);
+				canvas.drawRect(width/2 - i, 1, width/2 - i - 1 , 19, storyPaint);
+				storyPaint.setColor(HUDcolor);
+				if (HUDcolor != 0xFFFF0000){
+					HUDcolor = HUDcolor - (1 << 8);
+				}
+			}	
+			storyPaint.setColor(Color.BLACK);
+			if (GameVariables.storytime <= story1.getWidth()){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+			}
+			else 
+			{
+				if (GameVariables.storytime >= story1.getWidth()+60 && GameVariables.storytime < 10000){
+
+					
+					canvas.drawBitmap(lefthud, 0 - lefthud.getWidth() + (GameVariables.storytime - 60 - story1.getWidth()), 20, HUDpaint);
+					canvas.drawBitmap(righthud, width- (GameVariables.storytime - 60 - story1.getWidth()), 20, HUDpaint);
+					canvas.drawBitmap(warninggrey, width- (GameVariables.storytime - 60 - story1.getWidth()), 15, HUDpaint);
+					canvas.drawBitmap(thousand, 0 - lefthud.getWidth() + (GameVariables.storytime - 60 - story1.getWidth()), 20, HUDpaint);
+					canvas.drawBitmap(hundred, 0 - lefthud.getWidth() + (GameVariables.storytime - 60 - story1.getWidth()), 20, HUDpaint);
+					canvas.drawBitmap(ten, 0 - lefthud.getWidth() + (GameVariables.storytime - 60 - story1.getWidth()), 20, HUDpaint);
+
+					if (0 - lefthud.getWidth() + GameVariables.storytime - 60 - story1.getWidth() == 0){
+						GameVariables.storytime = 10000;
+						storycount = lefthud.getWidth();
+					}
+				}
+				else if (GameVariables.storytime > 10000 && GameVariables.storytime < 20000){
+					canvas.drawBitmap(lefthud, 0, 20, HUDpaint);
+					canvas.drawBitmap(righthud, width- righthud.getWidth(), 20, HUDpaint);
+					canvas.drawBitmap(warninggrey, width- righthud.getWidth(), 15, HUDpaint);
+					canvas.drawBitmap(thousand, 0, 20, HUDpaint);
+					canvas.drawBitmap(hundred, 0 , 20, HUDpaint);
+					canvas.drawBitmap(ten, 0, 20, HUDpaint);
+
+					for (j=lefthud.getWidth(); (j < width-righthud.getWidth()-midhud.getWidth()) && j <= storycount; j+=midhud.getWidth()){
+							canvas.drawBitmap(midhud, j, 20, HUDpaint);
+							j+=midhud.getWidth();
+							canvas.drawBitmap(midhud, j, 20, HUDpaint);
+							j+=midhud.getWidth();
+							canvas.drawBitmap(midhud, j, 20, HUDpaint);
+							j+=midhud.getWidth();
+							canvas.drawBitmap(midhud, j, 20, HUDpaint);
+							j+=midhud.getWidth();
+							canvas.drawBitmap(midhud, j, 20, HUDpaint);
+							j+=midhud.getWidth();
+							canvas.drawBitmap(midhud, j, 20, HUDpaint);
+							j+=midhud.getWidth();
+							canvas.drawBitmap(midhud, j, 20, HUDpaint);
+							j+=midhud.getWidth();
+							canvas.drawBitmap(midhud, j, 20, HUDpaint);
+							j+=midhud.getWidth();
+							canvas.drawBitmap(midhud, j, 20, HUDpaint);
+					}
+					storycount = j;
+					canvas.drawBitmap(midhud, width-righthud.getWidth()-midhud.getWidth(), 20, HUDpaint);
+					if (storycount >= width-righthud.getWidth()-midhud.getWidth()){
+						GameVariables.storytime = 0;
+						GameVariables.help = 0;
+						GameVariables.where = 0;
+						ship_x = centerx - (ship.getHeight()/2);;
+						ship_y = height-70;
+						drawShip(canvas);
+					}
+				}
+			}
+		}
+	}
 	public void moveShip(boolean controlMethod) {
 		
 		//MOVE BY ACCELEROMETER
@@ -652,7 +1091,6 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 		context.startActivity(intent_scores);
 	    gameLoopThread.setRunning(false);
         gameLoopThread.interrupt();
-        
        
 		
 	}
@@ -675,6 +1113,21 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 		ten.recycle();
 		tut.recycle();
 		
+		bg = null;
+		ship = null;
+		heartfull = null;
+		heartempty = null;
+		redhit = null;
+		glass = null;
+		crash = null;
+		lefthud = null;
+		righthud = null;
+		midhud = null;
+		thousand = null;
+		hundred = null;
+		ten = null;
+		tut = null;
+		
 	}
 
 
@@ -689,6 +1142,10 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 		// get touched coordinates
 		GameVariables.touchY = (int) event.getY();
 		
+		if (GameVariables.help == 1 && GameVariables.story == 10)
+		{
+			shot_fired = 1;
+		}
 		
 		if (GameVariables.pause == 1){// unpause game by touching screen
 			GameVariables.pause = 0;
@@ -790,12 +1247,12 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 		}
 		if (spawning < 120){
 			glasspaint.setAlpha(glassopa*2);
-			canvas.drawBitmap(warningred, width-righthud.getWidth(), -5, glasspaint);
+			canvas.drawBitmap(warningred, width-righthud.getWidth(), 15, glasspaint);
 		}
 		else if (spawning > 120){
 			
 			glasspaint.setAlpha(glassopa);
-			canvas.drawBitmap(warningred, width-righthud.getWidth(), -5, glasspaint);
+			canvas.drawBitmap(warningred, width-righthud.getWidth(), 15, glasspaint);
 		}
 		if (spawning > 120){
 			count = count + 2*GameVariables.speedModifier;
@@ -975,19 +1432,19 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 		Paint HUDpaint = new Paint();
 		HUDpaint.setAlpha(100);
 		
-		canvas.drawBitmap(lefthud, 0, -25, HUDpaint);
-		canvas.drawBitmap(righthud, width-righthud.getWidth(), -25, HUDpaint);
-		canvas.drawBitmap(warninggrey, width-righthud.getWidth(), -5, HUDpaint);
+		canvas.drawBitmap(lefthud, 0, 20, HUDpaint);
+		canvas.drawBitmap(righthud, width-righthud.getWidth(), 20, HUDpaint);
+		canvas.drawBitmap(warninggrey, width-righthud.getWidth(), 15, HUDpaint);
 
 		for (i=lefthud.getWidth(); i < width-righthud.getWidth()-midhud.getWidth(); i+=midhud.getWidth()){
-			canvas.drawBitmap(midhud, i, -25, HUDpaint);
+			canvas.drawBitmap(midhud, i, 20, HUDpaint);
 		}
-		canvas.drawBitmap(midhud, width-righthud.getWidth()-midhud.getWidth(), -25, HUDpaint);
+		canvas.drawBitmap(midhud, width-righthud.getWidth()-midhud.getWidth(), 20, HUDpaint);
 		
 
 		
 		heartx = width/2 - heartfull.getWidth()/2 - 10 - heartfull.getWidth();
-		hearty = 10;
+		hearty = 25;
 		if (heartpaint.getAlpha() >= 244){
 			heartopa = 1;
 		}
@@ -1010,26 +1467,30 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 			heartx = heartx + heartfull.getWidth() + 10;
 		}
 		
-		HUDpaint.setAlpha(100);
-		int HUDcolor = 0xFFCCFFFF; 
-		HUDpaint.setColor(HUDcolor);
-		HUDpaint.setStyle(Style.STROKE);
-		canvas.drawRect(0, lefthud.getHeight() - 25, 347, lefthud.getHeight()-25+10, HUDpaint);
+
 		HUDpaint.setAlpha(175);
 
-		HUDcolor = 0xFFFFFF00; 
+		int HUDcolor = 0xFFFFFF00; 
 
 		HUDpaint.setColor(HUDcolor);
 		
-		for (i = 0; i < boosting*1.75; i+=2){
-			canvas.drawRect(2+i, lefthud.getHeight() -25 + 2, 3+i , lefthud.getHeight()-25+8, HUDpaint);
+		for (i = 0; i < boosting*width/392; i+=2){
+			canvas.drawRect(width/2 + i, 1, width/2 + i + 1 , 19, HUDpaint);
+			canvas.drawRect(width/2 - i, 1, width/2 - i - 1 , 19, HUDpaint);
 			HUDpaint.setColor(HUDcolor);
-			HUDcolor = HUDcolor - (1 << 8);
-		}
+			if (HUDcolor != 0xFFFF0000){
+				HUDcolor = HUDcolor - (1 << 8);
+			}
+		}		
+		HUDpaint.setAlpha(100);
+		HUDcolor = 0xFFCCFFFF; 
+		HUDpaint.setColor(HUDcolor);
+		HUDpaint.setStyle(Style.STROKE);
+		canvas.drawRect(0, 0, width, 20, HUDpaint);
 
-		canvas.drawBitmap(thousand, 0, -25, null);
-		canvas.drawBitmap(hundred, 0, -25, null);
-		canvas.drawBitmap(ten, 0, -25, null);
+		canvas.drawBitmap(thousand, 0, 20, null);
+		canvas.drawBitmap(hundred, 0, 20, null);
+		canvas.drawBitmap(ten, 0, 20, null);
 
 
 		
@@ -1184,8 +1645,7 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 	}
 	
 	public void drawHelper(Canvas canvas){
-		Paint helperPaint = new Paint();
-		Path helperLine = new Path();
+		
 		helperPaint.setStyle(Paint.Style.FILL);
 		if (GameVariables.level == 2){
 			helperPaint.setColor(0xFF0000FF);
@@ -1552,7 +2012,7 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 			edges.setAlpha(100);
 		}
 		else{
-			edges.setAlpha(255);
+			edges.setAlpha(100);
 			if (boosting < 196){
 				boosting +=4;
 			}

@@ -96,9 +96,24 @@ public class GameOptions extends Activity{
 
         bBack.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				finish();
+				//finish();
+				Intent intentStart = new Intent (GameOptions.this, MainActivity.class);
+				GameVariables.s = 1;
+				intentStart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+						| Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intentStart);
 			}
 		});
+	}
+	
+	@Override
+	public void onBackPressed() {
+		Intent intentStart = new Intent (GameOptions.this, MainActivity.class);
+		GameVariables.s = 1;
+		intentStart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+				| Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intentStart);
+		
 	}
 
 }
