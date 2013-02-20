@@ -38,7 +38,7 @@ public class MainActivity extends Activity{
         super.onCreate(savedInstanceState);
         
         
-        if (GameVariables.s == 1) {
+        if (GameVariables.s == 1) { //no need to reset to 0, because after restart, it is initated to 0
         	restart(10);
         }
         
@@ -82,11 +82,13 @@ public class MainActivity extends Activity{
         Button bOptions = (Button) findViewById(R.id.options);
         Button bScores = (Button) findViewById(R.id.scores);
         Button bExit = (Button) findViewById(R.id.exit);
+        Button bSettings = (Button) findViewById(R.id.settings);
         
         bStart.setTypeface(font1);
         bOptions.setTypeface(font1);
         bExit.setTypeface(font1);
         bScores.setTypeface(font1);
+        bSettings.setTypeface(font1);
         
         bStart.setOnClickListener(new View.OnClickListener() {
 			
@@ -131,8 +133,15 @@ public class MainActivity extends Activity{
         	}
         });
         
-        
-        
+        bSettings.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View view) {
+				Intent settingsPage = new Intent (MainActivity.this, Settings.class);
+				startActivity(settingsPage);
+				
+			}
+		});
+  
     }
 	
 	

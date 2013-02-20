@@ -25,6 +25,8 @@ public class GameLoopThread extends Thread {
 	private double samples[] = new double[(int) numSamples];
 	private final byte buffer[] = new byte[2 * (int) numSamples];
 	private double frequency = 1000;
+	
+	static private int threadkiller = 0;
        
        Handler handler = new Handler();
       
@@ -85,7 +87,8 @@ public class GameLoopThread extends Thread {
                            if (GameVariables.isSummoned == 1 && GameVariables.soundPlayed == 1 && (System.currentTimeMillis()-GameVariables.soundStarted) > 150){
                         	   //genTone();
                         	 //play sound thread
-                        	   final Thread thread = new Thread(new Runnable() {
+                        	  // System.gc();
+                        	   Thread thread = new Thread(new Runnable() {
                                    public void run() {
                                 	  
                                        genTone2();
@@ -99,7 +102,23 @@ public class GameLoopThread extends Thread {
                                });
                                thread.start();
                              
+								/*if (threadkiller == 1) {
+									thread.interrupt();
+									while (true) {
+										try {
+											thread.join(); // let thread die
+										} catch (InterruptedException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+										break;
+									}
+									thread = null;
+			
+								}*/
                            }
+                           
+                          
                           
                            if (GameVariables.levelchange == 0){
                         	   	GameVariables.level++;
@@ -223,6 +242,8 @@ public class GameLoopThread extends Thread {
 	void genTone2(){
 	    	
 	    	frequency = GameVariables.randFreq;
+	    	
+	    	if(track != null) track.release();
 	        // fill out the array
 	        for (int i = 0; i < numSamples; ++i) {
 	            samples[i] = Math.sin(2 * Math.PI * i / (sampleRate/frequency));
@@ -254,29 +275,28 @@ public class GameLoopThread extends Thread {
 			}
 			GameVariables.soundStarted = System.currentTimeMillis();
 			if (GameVariables.soundPlayed == 1) {
-				GameVariables.volume++;
-				track.setStereoVolume((float) (0.02 * GameVariables.volume),
-						(float) (0.02 * GameVariables.volume));
-				if (GameVariables.volume == 20) {
-
+				GameVariables.volume+=5;
+				track.setStereoVolume( (0.05f * GameVariables.volume), (0.05f * GameVariables.volume));
+				
+				/*if (GameVariables.volume == 20) {
 					track.pause();
-					
 					track.stop();
 					track.flush();
-					//track.release();
-				}
+					track.release();
+					System.gc();
+				}*/
 			}
 			track.play();
 			
 		}
-		if (GameVariables.volume == 20) {
-
+		
+		if (GameVariables.volume*0.05f > 1f) {
 			track.pause();
-			
 			track.stop();
 			track.flush();
-			track.release();
-			System.gc();
+			//track.release();
+			threadkiller = 1;
+			
 		}
 	}
 

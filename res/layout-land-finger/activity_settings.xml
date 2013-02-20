@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
+
+	    <NumberPicker
+	        android:id="@+id/npSpeaker"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_alignTop="@+id/npHeadphone"
+	        android:layout_marginRight="100dp"
+	        android:orientation="vertical"
+	        android:width="100dp" />
+
+	    <NumberPicker
+	        android:id="@+id/npHeadphone"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="100dp"
+	        android:orientation="vertical"
+	        android:width="100dp" />
+
+	    <TextView
+	        android:id="@+id/textView1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_above="@+id/npHeadphone"
+	        android:layout_alignLeft="@+id/npHeadphone"
+	        android:layout_marginBottom="14dp"
+	        android:text="In-line Volume" />
+
+	    <TextView
+	        android:id="@+id/textView2"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignBaseline="@+id/textView1"
+	        android:layout_alignBottom="@+id/textView1"
+	        android:layout_alignLeft="@+id/npSpeaker"
+	        android:text="Speaker Volume" />
+
+	    <Button
+	        android:id="@+id/bFlip"
+	        style="?android:attr/buttonStyleSmall"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignTop="@+id/npSpeaker"
+	        android:layout_centerHorizontal="true"
+	        android:text="Flip" />
+
+	    <TextView
+	        android:id="@+id/textView3"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignBaseline="@+id/textView1"
+	        android:layout_alignBottom="@+id/textView1"
+	        android:layout_centerHorizontal="true"
+	        android:text="Toggle Active" />
+
+	    <Button
+	        android:id="@+id/bPlay"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignBottom="@+id/npSpeaker"
+	        android:layout_centerHorizontal="true"
+	        android:text="Play" />
+
+	    <Button
+	        android:id="@+id/bStop"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignLeft="@+id/bPlay"
+	        android:layout_below="@+id/bPlay"
+	        android:text="Stop" />
+
+</RelativeLayout>

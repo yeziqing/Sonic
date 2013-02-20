@@ -140,18 +140,19 @@ public class GraphView extends View {
 					
 					if (xValues[i] > 0) { // ONLY DRAW ON GRAPH IF X VALUE > 0. THIS IS TO AVOID NULL IN EMPTY ARRAY ELEMENTS
 						if (i>0) {
-							
-							Path path = new Path();
+							//draws the semi-transparent filling
+							/*Path path = new Path();
 							path.moveTo(xSpacing*xValues[i]/1000 + border*2, height - (ySpacing*values[i] + border));
 	                        path.lineTo(xSpacing*xValues[i-1]/1000 + border*2, height - (ySpacing*values[i-1] + border));
 	                        path.lineTo(xSpacing*xValues[i-1]/1000 + border*2, height-border);
 	                        path.lineTo(xSpacing*xValues[i]/1000 + border*2, height-border);
 	                        path.close();
-							canvas.drawPath(path, paintGbg);
+							canvas.drawPath(path, paintGbg);*/
 							
 							
 						}
-						canvas.drawCircle( xSpacing*xValues[i]/1000 + border*2 , height - (ySpacing*values[i] + border) , 5 , paintPts);
+						//canvas.drawCircle( xSpacing*xValues[i]/1000 + border*2 , height - (ySpacing*values[i] + border) , 5 , paintPts);
+						canvas.drawCircle( xSpacing*xValues[i]/1000 + border*2 , (ySpacing*values[i] + border) , 5 , paintPts);
 				
 						lasth = h;
 					}

@@ -193,6 +193,7 @@ public class SimpleList extends ListActivity {
 			finish();
 			GameVariables.ResetAfterResults();
 			GameVariables.isRunning = 1; // set game to be is running
+			GameVariables.s = 1; // yes, need to restart
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -277,6 +278,7 @@ public class SimpleList extends ListActivity {
 	@Override
 	public void onBackPressed() {
 		Intent intent_MainActivity = new Intent (this, MainActivity.class);
+		intent_MainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		startActivity(intent_MainActivity);
 		finish();
 	}

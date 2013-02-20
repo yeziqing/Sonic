@@ -10,7 +10,8 @@ public class GameVariables extends Activity{
 	public static float[] yRaw = new float[100];
 	
 	//graph labels
-	static String[] verlabels = new String[] { "100dB", "90dB", "80dB", "70dB","60dB", "50dB", "40dB", "30dB", "20dB", "10dB", "0dB" };
+	//static String[] verlabels = new String[] { "100dB", "90dB", "80dB", "70dB","60dB", "50dB", "40dB", "30dB", "20dB", "10dB", "0dB" };
+	static String[] verlabels = new String[] { "0dB", "10dB", "20dB", "30dB","40dB", "50dB", "60dB", "70dB", "80dB", "90dB", "100dB" };
 	static String[] horlabels = new String[] { "0", "1k", "2k", "3k", "4k", "5k","6k", "7k", "8k", "9k", "10k", "11k", "12k", "13k", "14k","15k", "16k" };
 	
 	public static int s = 0; //determine if in need to restarting the app

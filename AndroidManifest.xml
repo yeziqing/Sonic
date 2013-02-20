@@ -4,7 +4,7 @@
     android:versionName="1.3.2" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="11"
         android:targetSdkVersion="11" />
 
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -76,6 +76,15 @@
          <activity
             android:name=".SimpleList"
             android:label="Saved Scores"
+            android:screenOrientation="landscape">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.steven.sonic.soniccatch.MainActivity" />
+         </activity>
+         
+         <activity
+            android:name=".Settings"
+            android:label="Settings"
             android:screenOrientation="landscape">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
