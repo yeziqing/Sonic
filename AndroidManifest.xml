@@ -6,8 +6,7 @@
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="11" />
-
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     
     <application
@@ -89,6 +88,17 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.steven.sonic.soniccatch.MainActivity" />
+         </activity>
+         
+         <activity
+            android:name=".TipsOverlay"
+            android:label="TipsOverlay"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Translucent">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.steven.sonic.soniccatch.MainActivity" />
+            
          </activity>
          
          

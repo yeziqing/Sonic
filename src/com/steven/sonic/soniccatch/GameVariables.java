@@ -5,7 +5,7 @@ import android.os.Vibrator;
 
 public class GameVariables extends Activity{
 
-	
+	//data arrays that are passed into resultsGraph.java
 	public static float[] xRaw = new float[100];
 	public static float[] yRaw = new float[100];
 	
@@ -14,10 +14,15 @@ public class GameVariables extends Activity{
 	static String[] verlabels = new String[] { "0dB", "10dB", "20dB", "30dB","40dB", "50dB", "60dB", "70dB", "80dB", "90dB", "100dB" };
 	static String[] horlabels = new String[] { "0", "1k", "2k", "3k", "4k", "5k","6k", "7k", "8k", "9k", "10k", "11k", "12k", "13k", "14k","15k", "16k" };
 	
-	public static int s = 0; //determine if in need to restarting the app
 	
-	public static int delta = 30;
+	//interface and navigation stuff
+	public static int s = 0; // determine if in need to restarting the app
+	public static boolean showTips = true;
+	public static boolean controlMethod = true; // default is tilt
+	public static boolean writeEnable = false;
+	public static String selectedSuffix;
 	
+	//in-game stuff
 	public static Vibrator shock;
 	public static int isRunning = 0;
 	public static int isSummoned = 0;
@@ -51,13 +56,9 @@ public class GameVariables extends Activity{
     public static int storytime = 0;
     public static int story = 0;
     public static int where = 0; //0:=actually playing, 1:=doing tutorial
-
-    
-    
-    public static boolean controlMethod = true; //default is tilt
-    public static boolean writeEnable = false;
     public static int touchY;
-    public static String selectedSuffix;
+
+	
     
 	public static void ResetAfterResults () {
 
@@ -83,9 +84,6 @@ public class GameVariables extends Activity{
 		level = 2;
 		divide = new int[8];
 		gamecolor = 0;
-
-		delta = 30;
-
 	}
 	
 	

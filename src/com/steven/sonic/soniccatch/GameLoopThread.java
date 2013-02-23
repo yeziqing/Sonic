@@ -268,15 +268,22 @@ public class GameLoopThread extends Thread {
 				AudioFormat.ENCODING_PCM_16BIT, buffer.length,
 				AudioTrack.MODE_STATIC);
 		int temp = track.write(buffer, 0, buffer.length);
-		if (temp != AudioTrack.ERROR_BAD_VALUE
-				&& temp != AudioTrack.ERROR_INVALID_OPERATION) {
+		if (temp != AudioTrack.ERROR_BAD_VALUE && temp != AudioTrack.ERROR_INVALID_OPERATION) {
+			
 			if (GameVariables.volume == 0) {
 				GameVariables.enemyAppear = System.currentTimeMillis();
 			}
+			
 			GameVariables.soundStarted = System.currentTimeMillis();
+			
 			if (GameVariables.soundPlayed == 1) {
-				GameVariables.volume+=5;
-				track.setStereoVolume( (0.05f * GameVariables.volume), (0.05f * GameVariables.volume));
+				GameVariables.volume+=3;
+				
+				try {
+					track.setStereoVolume( (0.05f * GameVariables.volume), (0.05f * GameVariables.volume));
+				} catch (IllegalStateException ese) {
+					
+				}
 				
 				/*if (GameVariables.volume == 20) {
 					track.pause();
@@ -291,11 +298,19 @@ public class GameLoopThread extends Thread {
 		}
 		
 		if (GameVariables.volume*0.05f > 1f) {
-			track.pause();
-			track.stop();
-			track.flush();
-			//track.release();
-			threadkiller = 1;
+			
+			if(track != null) {	
+				
+				try {
+					track.pause();
+					track.stop();
+					track.flush();
+					//track.release();
+					threadkiller = 1;
+				} catch (IllegalStateException ese) {
+					
+				}
+			}
 			
 		}
 	}

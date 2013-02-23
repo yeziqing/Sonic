@@ -42,12 +42,13 @@ public class Settings extends Activity{
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //Set fullscreen mode, removes the notification bar.
 		setContentView(R.layout.activity_settings);
 
-		setTitle("Calibration Tool");
+		setTitle("Calibration Your Earphones");
 		npHeadphone= (NumberPicker) findViewById(R.id.npHeadphone);
 		npSpeaker= (NumberPicker) findViewById(R.id.npSpeaker);
 		Button play = (Button) findViewById(R.id.bPlay);
 		Button stop = (Button) findViewById(R.id.bStop);
 		Button flip = (Button) findViewById(R.id.bFlip);
+		Button tips = (Button) findViewById(R.id.bTips);
 		
 		audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 		final int vMax = initializeStuff();
@@ -113,6 +114,15 @@ public class Settings extends Activity{
 			}
 		});
 		
+		tips.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+
+				Intent showTipsOverlay = new Intent(Settings.this, TipsOverlay.class);
+				//showTipsOverlay.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+				startActivity(showTipsOverlay);
+
+			}
+		});
 	
 	}
 	
@@ -136,19 +146,17 @@ public class Settings extends Activity{
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+	}
+
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		finish();
+	//	finish(); //commented this out because this activity would be destroyed whenever you go into another activity, i.e. tips overlay
 	}
 
 	@Override
@@ -158,13 +166,30 @@ public class Settings extends Activity{
 		finish();
 	}
 	
+	@Override
+    protected void onDestroy() {
+		super.onDestroy();
+        if(tone != null) {
+            tone.stop();
+            tone.release();
+            tone = null;
+        }
+    }
+
 	
 	
 	@Override
 	public void onBackPressed() {
 		
-		tone.pause();
-		tone.release();
+		//tone.pause();
+		//tone.stop();
+		//tone.release();
+		 if(tone != null) {
+	            tone.stop();
+	            tone.release();
+	            tone = null;
+	        }
+		 
 		Intent parentActivityIntent = new Intent(this, MainActivity.class); //go back to main menu
 		parentActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 				| Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -180,8 +205,16 @@ public class Settings extends Activity{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home: // Home button id
-			tone.pause();
-			tone.release();
+			//tone.pause();
+			//tone.stop();
+			//tone.release();
+			
+			 if(tone != null) {
+		            tone.stop();
+		            tone.release();
+		            tone = null;
+		        }
+			 
 			Intent parentActivityIntent = new Intent(this, MainActivity.class); //go back to main menu
 			parentActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 					| Intent.FLAG_ACTIVITY_NEW_TASK);

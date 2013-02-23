@@ -23,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.ViewDebug.FlagToString;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -255,8 +256,10 @@ public class SimpleList extends ListActivity {
 	    alert.show();
 	}
 	
+	//reload the activity itself. Used to refresh the list after a change occurs.
 	protected void reloadActivity() {
 		Intent intentReloadThisActivity = new Intent(SimpleList.this, SimpleList.class);
+		intentReloadThisActivity.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 		startActivity(intentReloadThisActivity);
 		finish();
 	}
