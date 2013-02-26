@@ -30,7 +30,7 @@ public class GraphView extends View {
 	private String title;
 	private boolean type;
 
-	public GraphView(Context context, float[] xValues, float[] values, String title, String[] horlabels, String[] verlabels, boolean type) {
+	public GraphView(Context context, float[] xValues, float[] values, int[] earValues, String title, String[] horlabels, String[] verlabels, boolean type) {
 		super(context);
 		if (values == null)
 			values = new float[0];
@@ -40,6 +40,11 @@ public class GraphView extends View {
 			xValues = new float[0];
 		else
 			this.xValues = xValues;
+		if (earValues == null)
+			earValues = new int[0];
+		else 
+			this.earValues = earValues;
+			
 		if (title == null)
 			title = "";
 		else
@@ -81,6 +86,10 @@ public class GraphView extends View {
 		paintBg.setColor(Color.BLACK);
 		paintPts.setColor(0xff33b5e5);
 		paintGbg.setColor(0x6411B9F7);
+		
+		paintEarBoth.setColor (0xff33b5e5); //holo blue
+		paintEarLeft.setColor (0xff30BA02); //greenish
+		paintEarRight.setColor (0xffFFFB00); //yellowish
 		
 		canvas.drawPaint(paintBg);
 
@@ -151,9 +160,13 @@ public class GraphView extends View {
 							
 							
 						}
+						
+						Paint temp = new Paint();
+						if (earValue[i] == 0) temp = paintEarBoth;
+						else if (earValue[i] == 1) temp = paintEarLeft;
+						else if (earValue[i] == 2) temp = paintEarRight;
 						//canvas.drawCircle( xSpacing*xValues[i]/1000 + border*2 , height - (ySpacing*values[i] + border) , 5 , paintPts);
-						canvas.drawCircle( xSpacing*xValues[i]/1000 + border*2 , (ySpacing*values[i] + border) , 5 , paintPts);
-				
+						canvas.drawCircle( xSpacing*xValues[i]/1000 + border*2 , (ySpacing*values[i] + border) , 5 , temp);
 						lasth = h;
 					}
 				}
