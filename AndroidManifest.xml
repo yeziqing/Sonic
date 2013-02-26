@@ -101,6 +101,16 @@
             
          </activity>
          
+         <activity
+            android:name=".EarOption"
+            android:label="EarOption"
+            android:screenOrientation="landscape">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.steven.sonic.soniccatch.MainActivity" />
+            
+         </activity>
+         
          
          
         

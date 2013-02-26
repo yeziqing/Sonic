@@ -1,6 +1,7 @@
 package com.steven.sonic.soniccatch;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,14 +9,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.NumberPicker;
 import android.widget.NumberPicker.OnValueChangeListener;
+import android.widget.Switch;
+import android.widget.Toast;
 
 public class Settings extends Activity{
 	
@@ -47,9 +52,56 @@ public class Settings extends Activity{
 		npSpeaker= (NumberPicker) findViewById(R.id.npSpeaker);
 		Button play = (Button) findViewById(R.id.bPlay);
 		Button stop = (Button) findViewById(R.id.bStop);
-		Button flip = (Button) findViewById(R.id.bFlip);
+		
 		Button tips = (Button) findViewById(R.id.bTips);
 		
+		
+		int version = android.os.Build.VERSION.SDK_INT;
+		if (true) {
+		    // get your Switch view and set up listeners etc
+			Button flip = (Button) findViewById(R.id.bFlip);
+
+			flip.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+
+					if (inline == true) {//switch to speakers
+						audioManager.setMode(AudioManager.MODE_IN_CALL);
+						audioManager.setSpeakerphoneOn(true);
+						audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, vSpeaker, AudioManager.FLAG_PLAY_SOUND);
+						inline = false;
+						npHeadphone.setEnabled(false);
+						npSpeaker.setEnabled(true);
+					}
+
+					else if (inline == false) {//switch to headphones
+						audioManager.setMode(AudioManager.MODE_NORMAL);
+						audioManager.setSpeakerphoneOn(false);
+						audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, vHeadphone, AudioManager.FLAG_PLAY_SOUND);
+						inline = true;
+						npHeadphone.setEnabled(true);
+						npSpeaker.setEnabled(false);
+					}
+
+				}
+			});
+		}
+		else if (false){
+		    // get your CheckBox view and set up listeners etc
+			Switch sw = (Switch) findViewById(R.id.switch1);
+
+			/*sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			        if (isChecked) {
+			            // The toggle is enabled
+			        	Toast.makeText(getApplicationContext(), "A", Toast.LENGTH_SHORT).show();
+			        } else {
+			            // The toggle is disabled
+			        	Toast.makeText(getApplicationContext(), "B", Toast.LENGTH_SHORT).show();
+			        }
+			    }
+			});*/
+		}
+
 		audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 		final int vMax = initializeStuff();
 		
@@ -90,29 +142,6 @@ public class Settings extends Activity{
 			}
 		});
 		
-		flip.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-
-				if (inline == true) {//switch to speakers
-					audioManager.setMode(AudioManager.MODE_IN_CALL);
-					audioManager.setSpeakerphoneOn(true);
-					audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, vSpeaker, AudioManager.FLAG_PLAY_SOUND);
-					inline = false;
-					npHeadphone.setEnabled(false);
-					npSpeaker.setEnabled(true);
-				}
-
-				else if (inline == false) {//switch to headphones
-					audioManager.setMode(AudioManager.MODE_NORMAL);
-					audioManager.setSpeakerphoneOn(false);
-					audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, vHeadphone, AudioManager.FLAG_PLAY_SOUND);
-					inline = true;
-					npHeadphone.setEnabled(true);
-					npSpeaker.setEnabled(false);
-				}
-
-			}
-		});
 		
 		tips.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -124,6 +153,18 @@ public class Settings extends Activity{
 			}
 		});
 	
+	}
+	
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH) //API 14 and above
+	public void onToggleClicked(View view) {
+	    // Is the toggle on?
+	    boolean on = ((Switch) view).isChecked();
+	    
+	    if (on) {
+	        // Enable vibrate
+	    } else {
+	        // Disable vibrate
+	    }
 	}
 	
 	public int initializeStuff() {

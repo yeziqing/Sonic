@@ -19,6 +19,7 @@ public class GameVariables extends Activity{
 	public static int s = 0; // determine if in need to restarting the app
 	public static boolean showTips = true;
 	public static boolean controlMethod = true; // default is tilt
+	public static int earMethod = 0; // default is 0, which is test for both ears. 1 means test for left, and 2 means test for right.
 	public static boolean writeEnable = false;
 	public static String selectedSuffix;
 	

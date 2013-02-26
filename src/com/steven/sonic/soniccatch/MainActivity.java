@@ -83,12 +83,14 @@ public class MainActivity extends Activity{
         Button bScores = (Button) findViewById(R.id.scores);
         Button bExit = (Button) findViewById(R.id.exit);
         Button bSettings = (Button) findViewById(R.id.settings);
+        Button bEarOption = (Button) findViewById(R.id.earOption);
         
         bStart.setTypeface(font1);
         bOptions.setTypeface(font1);
         bExit.setTypeface(font1);
         bScores.setTypeface(font1);
         bSettings.setTypeface(font1);
+        bEarOption.setTypeface(font1);
         
         bStart.setOnClickListener(new View.OnClickListener() {
 			
@@ -124,7 +126,7 @@ public class MainActivity extends Activity{
         bExit.setOnClickListener(new View.OnClickListener() {
         	
         	public void onClick(View view) {
-        		GameVariables.story = 1;
+        		//GameVariables.story = 1;
         		GameVariables.help = 1;
         		GameVariables.where = 1;
         		Intent intentStart = new Intent (MainActivity.this, GameStart.class);
@@ -141,6 +143,16 @@ public class MainActivity extends Activity{
 				
 			}
 		});
+        
+        bEarOption.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View view) {
+				Intent earPage = new Intent (MainActivity.this, EarOption.class);
+				startActivity(earPage);
+			}
+		});
+        
+        
   
     }
 	
@@ -157,14 +169,23 @@ public class MainActivity extends Activity{
 		SharedPreferences settings = getSharedPreferences("OptionsFile", 0);
         final SharedPreferences.Editor editor = settings.edit();
         
+        //initialize control option
         if (settings.contains("Control") == false) { //if preference don't exist yet, default to true (move by acc)
         	GameVariables.controlMethod = true;
-        }
-        
-        else if (settings.contains("Control") == true){ //if preference does exist, load it up
+        } else if (settings.contains("Control") == true){ //if preference does exist, load it up
         	GameVariables.controlMethod = settings.getBoolean("Control", true); //set the stored value. If no value exist, default to true.
         }
+        
+        //initialize ear option
+		if (settings.contains("Ear") == false) { // if preference don't exist yet, default to 0 (test both ears)
+			GameVariables.earMethod = 0;
+		} else if (settings.contains("Ear") == true) { // if preference exists, load the saved preference value into earMethod
+			GameVariables.earMethod = settings.getInt("Ear", 0); //get the saved value and set it to earMethod
+		}
 		
+		
+		//Toast.makeText(getApplicationContext(), String.valueOf(GameVariables.controlMethod), Toast.LENGTH_SHORT).show();
+		//Toast.makeText(getApplicationContext(), String.valueOf(GameVariables.earMethod), Toast.LENGTH_SHORT).show();
 	}
 
 
