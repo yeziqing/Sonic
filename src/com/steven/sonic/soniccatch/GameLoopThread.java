@@ -277,6 +277,7 @@ public class GameLoopThread extends Thread {
 			GameVariables.soundStarted = System.currentTimeMillis();
 			
 			if (GameVariables.soundPlayed == 1) {
+				//GameVariables.volume+=4;
 				GameVariables.volume+=3;
 				
 				try {

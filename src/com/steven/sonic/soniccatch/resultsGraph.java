@@ -45,10 +45,21 @@ public class resultsGraph extends Activity {
 
 		//String message = intent.getStringExtra(GameView.EXTRA_MESSAGE);
 		
-		BubbleSort(GameVariables.xRaw, GameVariables.yRaw); //sort the 2 arrays
+		//Disabled sorting because not using graph fill anymore, as well as to make it work with earValues
+		//BubbleSort(GameVariables.xRaw, GameVariables.yRaw); //sort the 2 arrays
+		
 		//ConvertToLog(GameVariables.yRaw); //convert to log10
 		
-		GraphView newGraph = new GraphView(this, GameVariables.xRaw, GameVariables.yRaw, "This is an Audiogram", GameVariables.horlabels, GameVariables.verlabels, GraphView.LINE);
+		//debug code: dummy data for testing different colors for different ear preferences
+		GameVariables.earRaw[0] = 0;
+		GameVariables.earRaw[1] = 1;
+		GameVariables.earRaw[2] = 2;
+		GameVariables.earRaw[3] = 0;
+		GameVariables.earRaw[4] = 1;
+		GameVariables.earRaw[5] = 2;
+		
+
+		GraphView newGraph = new GraphView(this, GameVariables.xRaw, GameVariables.yRaw, GameVariables.earRaw, "This is an Audiogram", GameVariables.horlabels, GameVariables.verlabels, GraphView.LINE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //Set fullscreen mode, removes the notification bar.
 		
 		setContentView(newGraph);
@@ -104,22 +115,30 @@ public class resultsGraph extends Activity {
 		}
 	}
 	
-	public void SaveData(String str, Boolean axis, String fileName) {
+	public void SaveData(String str, int axis, String fileName) {
 
 		try {
-			if (axis == true){ //if true, write x axis data to x axis file
+			if (axis == 0){ //if true, write x axis data to x axis file
 				FileOutputStream fOut = openFileOutput(fileName, MODE_WORLD_READABLE);
 				OutputStreamWriter osw = new OutputStreamWriter(fOut);
 				osw.write(str);		
 				osw.flush();
 				osw.close();
 			}
-			else { //else, write y axis data to x axis file
+			else if (axis == 1) { //else, write y axis data to y axis file
 				FileOutputStream fOut2 = openFileOutput(fileName, MODE_WORLD_READABLE);
 				OutputStreamWriter osw2 = new OutputStreamWriter(fOut2);
 				osw2.write(str);		
 				osw2.flush();
 				osw2.close();
+			}
+			
+			else if (axis == 2) { //else, write ear data to ear file
+				FileOutputStream fOut3 = openFileOutput(fileName, MODE_WORLD_READABLE);
+				OutputStreamWriter osw3 = new OutputStreamWriter(fOut3);
+				osw3.write(str);		
+				osw3.flush();
+				osw3.close();
 			}
 
 		} catch (FileNotFoundException e) {
@@ -172,9 +191,10 @@ public class resultsGraph extends Activity {
 		            Toast.makeText(getApplicationContext(), "Saving...", Toast.LENGTH_SHORT).show();
 		            String scoreSuffix = userName + " " + currentDateTimeString;
 		            
-		            SaveScoreSuffix(userName + " " + currentDateTimeString, "ScoreDatabase.txt");
-		            SaveData(Concatenate(GameVariables.xRaw), true, "x"+scoreSuffix); //write x data to file
-					SaveData(Concatenate(GameVariables.yRaw), false, "y"+scoreSuffix);//write y data to file
+		            SaveScoreSuffix(userName + " " + currentDateTimeString, "ScoreDatabase.txt"); //append to the list of score names
+		            SaveData(Concatenate(GameVariables.xRaw), 0, "x"+scoreSuffix); //write x data to file
+					SaveData(Concatenate(GameVariables.yRaw), 1, "y"+scoreSuffix);//write y data to file
+					SaveData(Concatenate(GameVariables.earRaw), 2, "ear"+scoreSuffix);//write ear data to file
 		        }
 		    });
 		    alert.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
@@ -204,8 +224,12 @@ public class resultsGraph extends Activity {
 				{
 					temp = xArray[j]; // swap elements
 					temp2 = yArray[j];
+			
+					
 					xArray[j] = xArray[j + 1];
 					yArray[j] = yArray[j + 1];
+					
+					
 					xArray[j + 1] = temp;
 					yArray[j + 1] = temp2;
 
@@ -230,8 +254,10 @@ public class resultsGraph extends Activity {
 		startActivity(intent_SimpleList);
 		finish();
 		GameVariables.ResetAfterResults(); //reset game lives and other data
-		GameVariables.xRaw = new float[100]; //reset the scores
+		//reset the scores: x, y, and ear
+		GameVariables.xRaw = new float[100]; 
 		GameVariables.yRaw = new float[100];
+		GameVariables.earRaw = new float [100];
 		GameVariables.isRunning = 1; // set game to be is running
 	}
 	
@@ -249,6 +275,7 @@ public class resultsGraph extends Activity {
 			GameVariables.ResetAfterResults(); //reset game lives and other data
 			GameVariables.xRaw = new float[100]; //reset the scores
 			GameVariables.yRaw = new float[100];
+			GameVariables.earRaw = new float [100];
 			GameVariables.isRunning = 1; // set game to be is running
 			GameVariables.s = 1; //yes, need to restart app
 			return true;
