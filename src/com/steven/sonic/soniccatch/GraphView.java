@@ -20,26 +20,17 @@ public class GraphView extends View {
 
 	private Paint paint;
 	private Paint paintBg;
-	private Paint paintGbg;
-	
 	private Paint paintPts;
-	private Paint paintEarBoth;
-	private Paint paintEarLeft;
-	private Paint paintEarRight;
-	private Paint temp;
+	private Paint paintGbg;
 	
 	private float[] values;
 	private float[] xValues;
-	private float[] earValues;
-	
-	private float textSize = 18;
-	
 	private String[] horlabels;
 	private String[] verlabels;
 	private String title;
 	private boolean type;
 
-	public GraphView(Context context, float[] xValues, float[] values, float[] earValues, String title, String[] horlabels, String[] verlabels, boolean type) {
+	public GraphView(Context context, float[] xValues, float[] values, int[] earValues, String title, String[] horlabels, String[] verlabels, boolean type) {
 		super(context);
 		if (values == null)
 			values = new float[0];
@@ -50,7 +41,7 @@ public class GraphView extends View {
 		else
 			this.xValues = xValues;
 		if (earValues == null)
-			earValues = new float[0];
+			earValues = new int[0];
 		else 
 			this.earValues = earValues;
 			
@@ -71,11 +62,6 @@ public class GraphView extends View {
 		paint = new Paint();
 		paintPts = new Paint();
 		paintGbg = new Paint();
-		
-		paintEarBoth = new Paint();
-		paintEarLeft = new Paint();
-		paintEarRight = new Paint();
-		temp = new Paint();
 	}
 
 	@Override
@@ -133,19 +119,8 @@ public class GraphView extends View {
 		}
 
 		paint.setTextAlign(Align.CENTER);
-		paintEarBoth.setTextAlign(Align.RIGHT);
-		paintEarLeft.setTextAlign(Align.RIGHT);
-		paintEarRight.setTextAlign(Align.RIGHT);
-		
-		paintEarBoth.setTextSize(textSize); //change to point 18 from the default 12
-		paintEarLeft.setTextSize(textSize);
-		paintEarRight.setTextSize(textSize);
-		
 		canvas.drawText(title, (graphwidth / 2) + horstart, border - 4, paint);
-		canvas.drawText("Both Ears", graphwidth, graphheight-border-border, paintEarBoth);
-		canvas.drawText("Left Ear", graphwidth, graphheight-border, paintEarLeft);
-		canvas.drawText("Right Ear", graphwidth, graphheight, paintEarRight);
-		
+
 		if (max != min) {
 			paint.setColor(Color.LTGRAY);
 			if (type == BAR) {
@@ -173,7 +148,8 @@ public class GraphView extends View {
 					//canvas.drawPoint(xSpacing*xValues[i]/1000 + border*2, height - (ySpacing*values[i] + border), paintPts);
 					
 					if (xValues[i] > 0) { // ONLY DRAW ON GRAPH IF X VALUE > 0. THIS IS TO AVOID NULL IN EMPTY ARRAY ELEMENTS
-						if (i>0) {//draws the semi-transparent filling
+						if (i>0) {
+							//draws the semi-transparent filling
 							/*Path path = new Path();
 							path.moveTo(xSpacing*xValues[i]/1000 + border*2, height - (ySpacing*values[i] + border));
 	                        path.lineTo(xSpacing*xValues[i-1]/1000 + border*2, height - (ySpacing*values[i-1] + border));
@@ -185,11 +161,10 @@ public class GraphView extends View {
 							
 						}
 						
-						int earValuesAsInt = Math.round(earValues[i]); //convert to the closest integer of given float
-						 
-						if (earValuesAsInt == 0) temp = paintEarBoth;
-						else if (earValuesAsInt == 1) temp = paintEarLeft;
-						else if (earValuesAsInt == 2) temp = paintEarRight;
+						Paint temp = new Paint();
+						if (earValue[i] == 0) temp = paintEarBoth;
+						else if (earValue[i] == 1) temp = paintEarLeft;
+						else if (earValue[i] == 2) temp = paintEarRight;
 						//canvas.drawCircle( xSpacing*xValues[i]/1000 + border*2 , height - (ySpacing*values[i] + border) , 5 , paintPts);
 						canvas.drawCircle( xSpacing*xValues[i]/1000 + border*2 , (ySpacing*values[i] + border) , 5 , temp);
 						lasth = h;

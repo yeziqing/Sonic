@@ -23,35 +23,33 @@ public class LoadScores extends Activity{
 
 	float[] xRaw1 = new float[101];
 	float[] yRaw1 = new float[101];
-	float[] earRaw = new float[101];
 	
 	@TargetApi(11)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 			
-		//LoadData("score_tab2_y.txt"); //debugging
+		//LoadData("score_tab2_y.txt");
 		//xRaw1 = LoadData("score_tab2_x.txt");
 		//yRaw1 = LoadData("score_tab2_y.txt");
 		
-		//Append the corresponding coordinate type to the front of the suffix name, in order to identify the corresponding file names to be loaded/read.
+		//Append the corresponding coordinate type to the front of the suffix name, in order to identify the corresponding file names to be loaded.
 		xRaw1 = LoadData("x"+GameVariables.selectedSuffix);
 		yRaw1 = LoadData("y"+GameVariables.selectedSuffix);
-		earRaw = LoadData("ear"+GameVariables.selectedSuffix);
 		
 		setTitle("Saved Scores for "+GameVariables.selectedSuffix); //set the title on the action bar to be this
-		GraphView myGraph = new GraphView(this, xRaw1, yRaw1, earRaw, "Audiogram", GameVariables.horlabels, GameVariables.verlabels, GraphView.LINE);
+		GraphView myGraph = new GraphView(this, xRaw1, yRaw1, "Audiogram", GameVariables.horlabels, GameVariables.verlabels, GraphView.LINE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //Set fullscreen mode, removes the notification bar.
 		
 		setContentView(myGraph);
-		//GameView.recycleAllBitmaps();
+		GameView.recycleAllBitmaps();
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 	}
 	
-	//general method for writing data a file named FILENAME
+	
 	public float[] LoadData(String FILENAME){
 		
 		float[] arr = new float[100];

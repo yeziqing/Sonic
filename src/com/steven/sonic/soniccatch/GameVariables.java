@@ -8,7 +8,6 @@ public class GameVariables extends Activity{
 	//data arrays that are passed into resultsGraph.java
 	public static float[] xRaw = new float[100];
 	public static float[] yRaw = new float[100];
-	public static float[] earRaw = new float[100];
 	
 	//graph labels
 	//static String[] verlabels = new String[] { "100dB", "90dB", "80dB", "70dB","60dB", "50dB", "40dB", "30dB", "20dB", "10dB", "0dB" };
@@ -20,7 +19,7 @@ public class GameVariables extends Activity{
 	public static int s = 0; // determine if in need to restarting the app
 	public static boolean showTips = true;
 	public static boolean controlMethod = true; // default is tilt
-	public static int earMethod = 0; // default is 0, which is test for both ears. 1 means test for left, 2 means test for right, 3 means RANDOM
+	public static int earMethod = 0; // default is 0, which is test for both ears. 1 means test for left, and 2 means test for right.
 	public static boolean writeEnable = false;
 	public static String selectedSuffix;
 	
