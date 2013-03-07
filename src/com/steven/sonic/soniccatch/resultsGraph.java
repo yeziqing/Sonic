@@ -51,12 +51,12 @@ public class resultsGraph extends Activity {
 		//ConvertToLog(GameVariables.yRaw); //convert to log10
 		
 		//debug code: dummy data for testing different colors for different ear preferences
-		GameVariables.earRaw[0] = 0;
+		/*GameVariables.earRaw[0] = 0;
 		GameVariables.earRaw[1] = 1;
 		GameVariables.earRaw[2] = 2;
 		GameVariables.earRaw[3] = 0;
 		GameVariables.earRaw[4] = 1;
-		GameVariables.earRaw[5] = 2;
+		GameVariables.earRaw[5] = 2;*/
 		
 
 		GraphView newGraph = new GraphView(this, GameVariables.xRaw, GameVariables.yRaw, GameVariables.earRaw, "This is an Audiogram", GameVariables.horlabels, GameVariables.verlabels, GraphView.LINE);
