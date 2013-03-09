@@ -107,7 +107,7 @@ public class MainActivity extends Activity{
 			
 			public void onClick(View view) {
 				
-				Intent intentOptions = new Intent (MainActivity.this, GameOptions.class);
+				Intent intentOptions = new Intent (MainActivity.this, GameSettings.class);
 				startActivity(intentOptions);
 			}
 		});
@@ -138,6 +138,7 @@ public class MainActivity extends Activity{
         bSettings.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View view) {
+				//Intent settingsPage = new Intent (MainActivity.this, Settings.class);
 				Intent settingsPage = new Intent (MainActivity.this, Settings.class);
 				startActivity(settingsPage);
 				

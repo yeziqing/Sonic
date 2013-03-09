@@ -17,7 +17,7 @@ public class EarOption extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		SharedPreferences settings = getSharedPreferences("OptionsFile", 0);
 		final SharedPreferences.Editor editor = settings.edit();
 

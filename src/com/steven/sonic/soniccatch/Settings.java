@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -42,6 +43,9 @@ public class Settings extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
+		//this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //Set fullscreen mode, removes the notification bar.
@@ -222,16 +226,13 @@ public class Settings extends Activity{
 	@Override
 	public void onBackPressed() {
 		
-		//tone.pause();
-		//tone.stop();
-		//tone.release();
 		 if(tone != null) {
 	            tone.stop();
 	            tone.release();
 	            tone = null;
 	        }
 		 
-		Intent parentActivityIntent = new Intent(this, MainActivity.class); //go back to main menu
+		Intent parentActivityIntent = new Intent(this, GameSettings.class); //go back to main menu
 		parentActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 				| Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(parentActivityIntent);
@@ -246,17 +247,13 @@ public class Settings extends Activity{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home: // Home button id
-			//tone.pause();
-			//tone.stop();
-			//tone.release();
-			
-			 if(tone != null) {
-		            tone.stop();
-		            tone.release();
-		            tone = null;
-		        }
+			if (tone != null) {
+				tone.stop();
+				tone.release();
+				tone = null;
+			}
 			 
-			Intent parentActivityIntent = new Intent(this, MainActivity.class); //go back to main menu
+			Intent parentActivityIntent = new Intent(this, GameSettings.class); //go back to main menu
 			parentActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 					| Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(parentActivityIntent);
