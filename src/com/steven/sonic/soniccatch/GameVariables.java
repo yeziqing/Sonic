@@ -21,6 +21,7 @@ public class GameVariables extends Activity{
 	public static boolean showTips = true;
 	public static boolean controlMethod = true; // default is tilt
 	public static int earMethod = 0; // default is 0, which is test for both ears. 1 means test for left, 2 means test for right, 3 means RANDOM
+	public static int earTesting = 0;
 	public static boolean writeEnable = false;
 	public static String selectedSuffix;
 	
@@ -32,6 +33,7 @@ public class GameVariables extends Activity{
 	public static float[] enemyLocation = new float[2]; 
 	public static int duration = 1;
 	public static int randFreq = 0;
+	public static int[] Freqs = {500,1000,3000,5000,8000,10000,14000};
 	public static double frequency;
 	public static int shotfrom = 0;
 	public static long soundStarted = 0;
@@ -45,12 +47,15 @@ public class GameVariables extends Activity{
 	public static int currentscore = 0;
 	public static double[] miss = new double[4];
 	public static int currentmiss = 0;
-	public static int level = 2;
+	public static int level = 1;
 	public static int[] divide = new int[8];
 	public static int gamecolor = 0;
-	public static int speedModifier = 1;
+	public static int speedModifier = 2;
+	public static int storySpeed = 0;
+	public static int playBack = 1;
+	public static int playBackLevel = 1;
     public static int scoretime = 0;
-    public static int levelchange = 2;
+    public static int levelchange = 0;
     public static int pressAt = 20;
     public static int tutorial = 0;
     public static int pause = 0;

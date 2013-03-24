@@ -233,7 +233,7 @@ public class GameStart extends Activity{
 	//prevents users from exiting by accident
 	@Override
 	public void onBackPressed() {
-		
+
 		//GameStart.finishActivity(0);
 	}
 

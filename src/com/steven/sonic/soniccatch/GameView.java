@@ -84,7 +84,7 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 	public float[] shot_size_place = {0,0};
 	public int shot_fired;
 	public int shooting;
-	public int boosting = 196;
+	public int boosting = 0;
 	private Paint shot = new Paint();
 	private Path shot_path = new Path();
 	
@@ -401,7 +401,7 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 		//Removed due to debugging
 		if (GameVariables.isSummoned == 1){
 			middle.setColor(Color.WHITE);
-			canvas.drawRect(GameVariables.enemyLocation[0], (float)height-10, GameVariables.enemyLocation[1], (float)height, middle);
+		//	canvas.drawRect(GameVariables.enemyLocation[0], (float)height-10, GameVariables.enemyLocation[1], (float)height, middle);
 			
 			drawGlass(canvas);
 
@@ -551,6 +551,7 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 				else if (GameVariables.storytime >= 6000){
 					storyAlpha = 0;
 					GameVariables.storytime = 0;
+					GameVariables.storySpeed = 1;
 					GameVariables.story = 5;
 				}
 			}
@@ -568,22 +569,23 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 			}
 			else 
 			{
-				if (GameVariables.storytime >= story1.getWidth() && GameVariables.storytime <= story1.getWidth()+60){
+				if (GameVariables.storytime >= story1.getWidth()+100 && GameVariables.storytime <= story1.getWidth()+200){
 					GameVariables.speedModifier = 32;
+					GameVariables.storySpeed = 0;
 				}
-				else if (GameVariables.storytime >= story1.getWidth() + 60 && GameVariables.storytime <= story1.getWidth()+120){
+				else if (GameVariables.storytime >= story1.getWidth() + 200 && GameVariables.storytime <= story1.getWidth()+300){
 					GameVariables.speedModifier = 16;
 				}
-				else if (GameVariables.storytime >= story1.getWidth() + 120 && GameVariables.storytime <= story1.getWidth()+180){
+				else if (GameVariables.storytime >= story1.getWidth() + 300 && GameVariables.storytime <= story1.getWidth()+400){
 					GameVariables.speedModifier = 8;
 				}
-				else if (GameVariables.storytime >= story1.getWidth() + 180 && GameVariables.storytime <= story1.getWidth()+240){
+				else if (GameVariables.storytime >= story1.getWidth() + 400 && GameVariables.storytime <= story1.getWidth()+500){
 					GameVariables.speedModifier = 4;
 				}
-				else if (GameVariables.storytime >= story1.getWidth() + 240 && GameVariables.storytime <= story1.getWidth()+300){
+				else if (GameVariables.storytime >= story1.getWidth() + 500 && GameVariables.storytime <= story1.getWidth()+600){
 					GameVariables.speedModifier = 2;
 				}
-				else if (GameVariables.storytime >= 300){
+				else if (GameVariables.storytime >= 600){
 					GameVariables.storytime = 0;
 					GameVariables.story = 6;
 				}
@@ -640,14 +642,15 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 			}
 			else 
 			{
-				if (GameVariables.storytime >= story1.getWidth()+60 && ship_x >= centerx-50){
+				if (GameVariables.storytime >= story1.getWidth()+60 && centerx <= width/2){
+					centerx+=1;
+				}
+				if (GameVariables.storytime >= story1.getWidth()+60 && ship_x >= width/2){
 					ship = BitmapFactory.decodeResource(getResources(), R.drawable.shipleft);
 					ship_x-=5;
-					//ship_x = centerx - (ship.getHeight()/2);;
-					//ship_y = height-70;
 				}
-				else if (ship_x <=centerx){
-					//ship = BitmapFactory.decodeResource(getResources(), R.drawable.shipfront);
+				if (ship_x <= width/2 && centerx >= width/2){
+					ship = BitmapFactory.decodeResource(getResources(), R.drawable.shipfront);
 					GameVariables.storytime = 0;
 					GameVariables.story = 8;
 					boosting = 0;
@@ -663,7 +666,6 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 			drawBox(canvas);
 			modifyBoxes();
 			canvas.drawBitmap(ship, ship_x-10, ship_y, null);
-			//canvas.drawBitmap(ship, ship_x-10, centery, null);
 			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
 			if (GameVariables.storytime <= story1.getWidth()){
 				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
@@ -675,7 +677,7 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 						boosting = 0;
 					}
 					storyPaint.setAlpha(175);
-					boosting -= 2;
+					boosting += 2;
 					for (i = 0; i < boosting*width/392; i+=2){
 						canvas.drawRect(width/2 + i, 1, width/2 + i + 1 , 19, storyPaint);
 						canvas.drawRect(width/2 - i, 1, width/2 - i - 1 , 19, storyPaint);
@@ -700,10 +702,9 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 			canvas.drawRect(0, 0, width, height-story1.getHeight(), middle);
 			drawBox(canvas);
 			modifyBoxes();
-			//ship_y+=100;
-			ship_x+=100;
 			canvas.drawBitmap(ship, ship_x-10, ship_y, null);
 			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			
 			for (i = 0; i < boosting*width/392; i+=2){
 				canvas.drawRect(width/2 + i, 1, width/2 + i + 1 , 19, storyPaint);
 				canvas.drawRect(width/2 - i, 1, width/2 - i - 1 , 19, storyPaint);
@@ -772,6 +773,9 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 			modifyBoxes();
 			canvas.drawBitmap(ship, ship_x-10, ship_y, null);
 			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			if (boosting < 196){
+				boosting +=4;
+			}
 			for (i = 0; i < boosting*width/392; i+=2){
 				canvas.drawRect(width/2 + i, 1, width/2 + i + 1 , 19, storyPaint);
 				canvas.drawRect(width/2 - i, 1, width/2 - i - 1 , 19, storyPaint);
@@ -792,11 +796,11 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 					canvas.drawBitmap(lefthud, 0 - lefthud.getWidth() + (GameVariables.storytime - 60 - story1.getWidth()), 20, HUDpaint);
 					canvas.drawBitmap(righthud, width- (GameVariables.storytime - 60 - story1.getWidth()), 20, HUDpaint);
 					canvas.drawBitmap(warninggrey, width- (GameVariables.storytime - 60 - story1.getWidth()), 15, HUDpaint);
-					canvas.drawBitmap(thousand, 0 - lefthud.getWidth() + (GameVariables.storytime - 60 - story1.getWidth()), 20, HUDpaint);
-					canvas.drawBitmap(hundred, 0 - lefthud.getWidth() + (GameVariables.storytime - 60 - story1.getWidth()), 20, HUDpaint);
-					canvas.drawBitmap(ten, 0 - lefthud.getWidth() + (GameVariables.storytime - 60 - story1.getWidth()), 20, HUDpaint);
+					canvas.drawBitmap(thousand, 0 - lefthud.getWidth() + (GameVariables.storytime - 60 - story1.getWidth()), 20, null);
+					canvas.drawBitmap(hundred, 0 - lefthud.getWidth() + (GameVariables.storytime - 60 - story1.getWidth()), 20, null);
+					canvas.drawBitmap(ten, 0 - lefthud.getWidth() + (GameVariables.storytime - 60 - story1.getWidth()), 20, null);
 
-					if (0 - lefthud.getWidth() + GameVariables.storytime - 60 - story1.getWidth() == 0){
+					if (0 - lefthud.getWidth() + GameVariables.storytime - 60 - story1.getWidth() >= 0){
 						GameVariables.storytime = 10000;
 						storycount = lefthud.getWidth();
 					}
@@ -832,16 +836,889 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 					canvas.drawBitmap(midhud, width-righthud.getWidth()-midhud.getWidth(), 20, HUDpaint);
 					if (storycount >= width-righthud.getWidth()-midhud.getWidth()){
 						GameVariables.storytime = 0;
-						GameVariables.help = 0;
-						GameVariables.where = 0;
-						ship_x = centerx - (ship.getHeight()/2);;
-						ship_y = height-70;
-						drawShip(canvas);
+						GameVariables.story = 12;
 					}
 				}
 			}
 		}
+		else if (GameVariables.story == 12){
+			int i, j;
+			int HUDcolor = 0xFFFFFF00; 
+			Paint HUDpaint = new Paint();
+			HUDpaint.setAlpha(100);
+			story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title13);
+			canvas.drawRect(0, 0, width, height-story1.getHeight(), middle);
+			drawBox(canvas);
+			modifyBoxes();
+			canvas.drawBitmap(ship, ship_x-10, ship_y, null);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			if (boosting < 196){
+				boosting +=4;
+			}
+			for (i = 0; i < boosting*width/392; i+=2){
+				canvas.drawRect(width/2 + i, 1, width/2 + i + 1 , 19, storyPaint);
+				canvas.drawRect(width/2 - i, 1, width/2 - i - 1 , 19, storyPaint);
+				storyPaint.setColor(HUDcolor);
+				if (HUDcolor != 0xFFFF0000){
+					HUDcolor = HUDcolor - (1 << 8);
+				}
+			}	
+			canvas.drawBitmap(lefthud, 0, 20, HUDpaint);
+			canvas.drawBitmap(righthud, width- righthud.getWidth(), 20, HUDpaint);
+			canvas.drawBitmap(warninggrey, width- righthud.getWidth(), 15, HUDpaint);
+			canvas.drawBitmap(thousand, 0, 20, null);
+			canvas.drawBitmap(hundred, 0 , 20, null);
+			canvas.drawBitmap(ten, 0, 20, null);
+			for (i=lefthud.getWidth(); i < width-righthud.getWidth()-midhud.getWidth()+1; i+=midhud.getWidth()){
+				canvas.drawBitmap(midhud, i, 20, HUDpaint);
+			}
+			
+			
+			storyPaint.setColor(Color.BLACK);
+			if (GameVariables.storytime <= story1.getWidth()){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+				if (GameVariables.storytime % 10 == 0){
+					GameVariables.scoretime = r.nextInt(999);
+					updateScore();
+				}
+			}
+			else 
+			{
+				storyPaint.setAlpha(100);
+				storyPaint.setColor(0xFFCCFFF);
+				storyPaint.setStyle(Style.STROKE);
+				if (GameVariables.storytime < story1.getWidth() + 50){
+					if (GameVariables.storytime % 10 == 0){
+						GameVariables.scoretime = r.nextInt(999);
+						updateScore();
+					}
+				}
+				else if (GameVariables.storytime > 200){
+					GameVariables.scoretime = 0;
+					updateScore();
+					GameVariables.storytime = 0;
+					storyAlpha = 0;
+					GameVariables.story = 13;
+				}
+			}
+		}
+		else if (GameVariables.story == 13){
+			int i, j;
+			int HUDcolor = 0xFFFFFF00; 
+			Paint HUDpaint = new Paint();
+			HUDpaint.setAlpha(100);
+			story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title14);
+			canvas.drawRect(0, 0, width, height-story1.getHeight(), middle);
+			drawBox(canvas);
+			modifyBoxes();
+			canvas.drawBitmap(ship, ship_x-10, ship_y, null);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			if (boosting < 196){
+				boosting +=4;
+			}
+			for (i = 0; i < boosting*width/392; i+=2){
+				canvas.drawRect(width/2 + i, 1, width/2 + i + 1 , 19, storyPaint);
+				canvas.drawRect(width/2 - i, 1, width/2 - i - 1 , 19, storyPaint);
+				storyPaint.setColor(HUDcolor);
+				if (HUDcolor != 0xFFFF0000){
+					HUDcolor = HUDcolor - (1 << 8);
+				}
+			}	
+			canvas.drawBitmap(lefthud, 0, 20, HUDpaint);
+			canvas.drawBitmap(righthud, width- righthud.getWidth(), 20, HUDpaint);
+			canvas.drawBitmap(warninggrey, width- righthud.getWidth(), 15, HUDpaint);
+			canvas.drawBitmap(thousand, 0, 20, null);
+			canvas.drawBitmap(hundred, 0 , 20, null);
+			canvas.drawBitmap(ten, 0, 20, null);
+			for (i=lefthud.getWidth(); i < width-righthud.getWidth()-midhud.getWidth()+1; i+=midhud.getWidth()){
+				canvas.drawBitmap(midhud, i, 20, HUDpaint);
+			}
+			
+			
+			storyPaint.setColor(Color.BLACK);
+			if (GameVariables.storytime <= story1.getWidth()){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+			}
+			else 
+			{
+				
+				if (GameVariables.storytime >= story1.getWidth() && GameVariables.storytime < 10000){
+					if (storyAlpha >= 0 && storyAlpha <= 250){
+						storyFade.setAlpha(storyAlpha);
+						canvas.drawBitmap(heartempty, width/2 - heartfull.getWidth()/2 - 10 - heartfull.getWidth(), 25, storyFade);
+					}
+					else if (storyAlpha >= 250)
+					{
+						storyFade.setAlpha(250);
+						canvas.drawBitmap(heartempty, width/2 - heartfull.getWidth()/2 - 10 - heartfull.getWidth(), 25, storyFade);
+					}
+					if (storyAlpha >= 50 && storyAlpha <= 300){
+						storyFade.setAlpha(storyAlpha-50);
+						canvas.drawBitmap(heartempty, width/2 - heartfull.getWidth()/2, 25, storyFade);
+					}
+					else if (storyAlpha >= 300)
+					{
+						storyFade.setAlpha(250);
+						canvas.drawBitmap(heartempty, width/2 - heartfull.getWidth()/2, 25, storyFade);
+					}
+					if (storyAlpha >= 100 && storyAlpha <= 350){
+						storyFade.setAlpha(storyAlpha-100);
+						canvas.drawBitmap(heartempty, width/2 - heartfull.getWidth()/2 + heartfull.getWidth() + 10, 25, storyFade);
+					}
+					else if (storyAlpha >= 350)
+					{
+						storyFade.setAlpha(250);
+						canvas.drawBitmap(heartempty, width/2 - heartfull.getWidth()/2 + heartfull.getWidth() + 10, 25, storyFade);
+					}
+					if (storyAlpha >= 350){
+						GameVariables.storytime = 10000;
+						storyAlpha = 0;
+					}
+					storyAlpha += 2;
+				}
+				else if (GameVariables.storytime >= 10000 && GameVariables.storytime < 20000){
+
+
+					if (storyAlpha >= 0 && storyAlpha <= 250){
+						storyFade.setAlpha(storyAlpha);
+						canvas.drawBitmap(heartfull, width/2 - heartfull.getWidth()/2 - 10 - heartfull.getWidth(), 25, storyFade);
+					}
+					else if (storyAlpha >= 250)
+					{
+						storyFade.setAlpha(250);
+						canvas.drawBitmap(heartfull, width/2 - heartfull.getWidth()/2 - 10 - heartfull.getWidth(), 25, storyFade);
+					}
+					if (storyAlpha >= 50 && storyAlpha <= 300){
+						storyFade.setAlpha(storyAlpha-50);
+						canvas.drawBitmap(heartfull, width/2 - heartfull.getWidth()/2, 25, storyFade);
+					}
+					else if (storyAlpha >= 300)
+					{
+						storyFade.setAlpha(250);
+						canvas.drawBitmap(heartfull, width/2 - heartfull.getWidth()/2, 25, storyFade);
+					}
+					if (storyAlpha >= 100 && storyAlpha <= 350){
+						storyFade.setAlpha(storyAlpha-100);
+						canvas.drawBitmap(heartfull, width/2 - heartfull.getWidth()/2 + heartfull.getWidth() + 10, 25, storyFade);
+					}
+					else if (storyAlpha >= 350)
+					{
+						storyFade.setAlpha(250);
+						canvas.drawBitmap(heartfull, width/2 - heartfull.getWidth()/2 + heartfull.getWidth() + 10, 25, storyFade);
+					}
+					if (storyAlpha >=350){
+						GameVariables.storytime = 20000;
+					}
+					canvas.drawBitmap(heartempty, width/2 - heartfull.getWidth()/2 - 10 - heartfull.getWidth(), 25, null);
+					canvas.drawBitmap(heartempty, width/2 - heartfull.getWidth()/2, 25, null);
+					canvas.drawBitmap(heartempty, width/2 - heartfull.getWidth()/2 + heartfull.getWidth() + 10, 25, null);
+
+					storyAlpha += 2;
+
+				}
+				else if (GameVariables.storytime > 20000){
+					GameVariables.storytime = 0;
+					GameVariables.story = 14;
+				}
+			}
+		}
+		else if (GameVariables.story == 14){
+			if (GameVariables.storytime >= 0 && GameVariables.storytime <= 600){
+				story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title15);
+			}
+			drawBackground(canvas);
+			drawBox(canvas);
+			drawHUD(canvas);
+			modifyBoxes();
+			drawShip(canvas);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			storyPaint.setColor(Color.BLACK);
+			if (GameVariables.storytime <= story1.getWidth()){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+			}
+			else 
+			{
+				helperPaint.setColor(0xFF0000FF);
+				//canvas.drawRect(0, height-20, GameVariables.divide[2], height, middle);
+
+				helperPaint.setStyle(Paint.Style.FILL);
+				helperPaint.setAlpha(100);
+				 
+				helperLine.moveTo(centerx-100, centery+100);
+				helperLine.lineTo(centerx, centery+100);
+				helperLine.lineTo(centerx, centery+100 + GameVariables.storytime - story1.getWidth());
+				helperLine.lineTo(centerx-100 - (((GameVariables.storytime-story1.getWidth())*(centerx-100))/(height - centery - 100)), centery+100 + GameVariables.storytime - story1.getWidth());
+				canvas.drawPath(helperLine, helperPaint);
+				helperLine.reset();
+				helperPaint.setColor(0xFFFF0000);
+				helperPaint.setStyle(Paint.Style.FILL);
+				helperPaint.setAlpha(100);
+				helperLine.moveTo(centerx+100, centery+100);
+				helperLine.lineTo(centerx, centery+100);
+				helperLine.lineTo(centerx, centery+100 + GameVariables.storytime - story1.getWidth());
+				helperLine.lineTo(centerx+100 + (((GameVariables.storytime-story1.getWidth())*(centerx-100))/(height - centery - 100)), centery+100 + GameVariables.storytime - story1.getWidth());
+				canvas.drawPath(helperLine, helperPaint);
+				helperLine.reset();
+				if ((centery+100 + GameVariables.storytime - story1.getWidth()) >= height){
+					GameVariables.storytime = 0;
+					GameVariables.story = 15;
+					storyAlpha = 0;
+				}
+			}
+		}
+		else if (GameVariables.story == 15){
+			if (GameVariables.storytime >= 0 && GameVariables.storytime <= 600){
+				story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title16);
+			}
+			drawBackground(canvas);
+			drawBox(canvas);
+			drawHUD(canvas);
+			modifyBoxes();
+			drawHelper(canvas);
+			drawShip(canvas);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			storyPaint.setColor(Color.BLACK);
+			if (GameVariables.storytime <= story1.getWidth()){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+			}
+			else 
+			{
+				if (GameVariables.storytime >= story1.getWidth() && GameVariables.storytime <= 2000){
+					GameVariables.randFreq = 500;
+					GameVariables.volume = 0;
+					GameVariables.soundPlayed = 1;
+					GameVariables.storytime = 2001;
+				}
+				else if (GameVariables.storytime >= 2001 && GameVariables.storytime <= 3000){
+					if (storyAlpha <=240){
+						storyAlpha += 10;
+					}
+					else{
+						GameVariables.storytime = 3001;
+					}
+					storyPaint.setColor(0xFFFFFFFF);
+					//canvas.drawRect(0, height-20, GameVariables.divide[7], height, middle);
+					storyPaint.setStyle(Paint.Style.FILL);
+					storyPaint.setAlpha(storyAlpha);
+					helperLine.moveTo(GameVariables.divide[7]*0, height-1);
+					helperLine.lineTo(centerx-100 + (200/7)*0, centery+100);
+					helperLine.lineTo(centerx-100 + (200/7)*1, centery+100);
+					helperLine.lineTo(GameVariables.divide[7]*1, height-1);
+					canvas.drawPath(helperLine, storyPaint);
+					helperLine.reset();
+					if (GameVariables.soundPlayed == 0){
+						GameVariables.storytime = 4001;
+					}
+				}
+				else if (GameVariables.storytime >= 3001 && GameVariables.storytime <= 4000){
+					if (storyAlpha >=10){
+						storyAlpha -= 10;
+					}
+					else{
+						GameVariables.storytime = 2001;
+					}
+					storyPaint.setColor(0xFFFFFFFF);
+					//canvas.drawRect(0, height-20, GameVariables.divide[7], height, middle);
+					storyPaint.setStyle(Paint.Style.FILL);
+					storyPaint.setAlpha(storyAlpha);
+					helperLine.moveTo(GameVariables.divide[7]*0, height-1);
+					helperLine.lineTo(centerx-100 + (200/7)*0, centery+100);
+					helperLine.lineTo(centerx-100 + (200/7)*1, centery+100);
+					helperLine.lineTo(GameVariables.divide[7]*1, height-1);
+					canvas.drawPath(helperLine, storyPaint);
+					helperLine.reset();
+					if (GameVariables.soundPlayed == 0){
+						GameVariables.storytime = 4001;
+					}
+				}
+				else if (GameVariables.storytime >= 4001 && GameVariables.storytime <= 5000){
+					GameVariables.randFreq = 1000;
+					storyAlpha = 0;
+					GameVariables.volume = 0;
+					GameVariables.soundPlayed = 1;
+					GameVariables.storytime = 5001;
+				}
+				else if (GameVariables.storytime >= 5001 && GameVariables.storytime <= 6000){
+					if (storyAlpha <=240){
+						storyAlpha += 10;
+					}
+					else{
+						GameVariables.storytime = 6001;
+					}
+					storyPaint.setColor(0xFFFFFFFF);
+					//canvas.drawRect(0, height-20, GameVariables.divide[7], height, middle);
+					storyPaint.setStyle(Paint.Style.FILL);
+					storyPaint.setAlpha(storyAlpha);
+					helperLine.moveTo(GameVariables.divide[7]*1, height-1);
+					helperLine.lineTo(centerx-100 + (200/7)*1, centery+100);
+					helperLine.lineTo(centerx-100 + (200/7)*2, centery+100);
+					helperLine.lineTo(GameVariables.divide[7]*2, height-1);
+					canvas.drawPath(helperLine, storyPaint);
+					helperLine.reset();
+					if (GameVariables.soundPlayed == 0){
+						GameVariables.storytime = 7001;
+					}
+				}
+				else if (GameVariables.storytime >= 6001 && GameVariables.storytime <= 7000){
+					if (storyAlpha >=10){
+						storyAlpha -= 10;
+					}
+					else{
+						GameVariables.storytime = 5001;
+					}
+					storyPaint.setColor(0xFFFFFFFF);
+					//canvas.drawRect(0, height-20, GameVariables.divide[7], height, middle);
+					storyPaint.setStyle(Paint.Style.FILL);
+					storyPaint.setAlpha(storyAlpha);
+					helperLine.moveTo(GameVariables.divide[7]*1, height-1);
+					helperLine.lineTo(centerx-100 + (200/7)*1, centery+100);
+					helperLine.lineTo(centerx-100 + (200/7)*2, centery+100);
+					helperLine.lineTo(GameVariables.divide[7]*2, height-1);
+					canvas.drawPath(helperLine, storyPaint);
+					helperLine.reset();
+					if (GameVariables.soundPlayed == 0){
+						GameVariables.storytime = 7001;
+					}
+				}
+				else if (GameVariables.storytime >= 7001 && GameVariables.storytime <= 8000){
+					GameVariables.randFreq = 3000;
+					GameVariables.volume = 0;
+					storyAlpha = 0;
+					GameVariables.soundPlayed = 1;
+					GameVariables.storytime = 8001;
+				}
+				else if (GameVariables.storytime >= 8001 && GameVariables.storytime <= 9000){
+					if (storyAlpha <=240){
+						storyAlpha += 10;
+					}
+					else{
+						GameVariables.storytime = 9001;
+					}
+					storyPaint.setColor(0xFFFFFFFF);
+					//canvas.drawRect(0, height-20, GameVariables.divide[7], height, middle);
+					storyPaint.setStyle(Paint.Style.FILL);
+					storyPaint.setAlpha(storyAlpha);
+					helperLine.moveTo(GameVariables.divide[7]*2, height-1);
+					helperLine.lineTo(centerx-100 + (200/7)*2, centery+100);
+					helperLine.lineTo(centerx-100 + (200/7)*3, centery+100);
+					helperLine.lineTo(GameVariables.divide[7]*3, height-1);
+					canvas.drawPath(helperLine, storyPaint);
+					helperLine.reset();
+					if (GameVariables.soundPlayed == 0){
+						GameVariables.storytime = 10001;
+					}
+				}
+				else if (GameVariables.storytime >= 9001 && GameVariables.storytime <= 10000){
+					if (storyAlpha >=10){
+						storyAlpha -= 10;
+					}
+					else{
+						GameVariables.storytime = 8001;
+					}
+					storyPaint.setColor(0xFFFFFFFF);
+					//canvas.drawRect(0, height-20, GameVariables.divide[7], height, middle);
+					storyPaint.setStyle(Paint.Style.FILL);
+					storyPaint.setAlpha(storyAlpha);
+					helperLine.moveTo(GameVariables.divide[7]*2, height-1);
+					helperLine.lineTo(centerx-100 + (200/7)*2, centery+100);
+					helperLine.lineTo(centerx-100 + (200/7)*3, centery+100);
+					helperLine.lineTo(GameVariables.divide[7]*3, height-1);
+					canvas.drawPath(helperLine, storyPaint);
+					helperLine.reset();
+					if (GameVariables.soundPlayed == 0){
+						GameVariables.storytime = 10001;
+					}
+				}
+				else if (GameVariables.storytime >= 10001 && GameVariables.storytime <= 11000){
+					GameVariables.randFreq = 5000;
+					GameVariables.volume = 0;
+					storyAlpha = 0;
+					GameVariables.soundPlayed = 1;
+					GameVariables.storytime = 11001;
+				}
+				else if (GameVariables.storytime >= 11001 && GameVariables.storytime <= 12000){
+					if (storyAlpha <=240){
+						storyAlpha += 10;
+					}
+					else{
+						GameVariables.storytime = 12001;
+					}
+					storyPaint.setColor(0xFFFFFFFF);
+					//canvas.drawRect(0, height-20, GameVariables.divide[7], height, middle);
+					storyPaint.setStyle(Paint.Style.FILL);
+					storyPaint.setAlpha(storyAlpha);
+					helperLine.moveTo(GameVariables.divide[7]*3, height-1);
+					helperLine.lineTo(centerx-100 + (200/7)*3, centery+100);
+					helperLine.lineTo(centerx-100 + (200/7)*4, centery+100);
+					helperLine.lineTo(GameVariables.divide[7]*4, height-1);
+					canvas.drawPath(helperLine, storyPaint);
+					helperLine.reset();
+					if (GameVariables.soundPlayed == 0){
+						GameVariables.storytime = 13001;
+					}
+				}
+				else if (GameVariables.storytime >= 12001 && GameVariables.storytime <= 13000){
+					if (storyAlpha >=10){
+						storyAlpha -= 10;
+					}
+					else{
+						GameVariables.storytime = 11001;
+					}
+					storyPaint.setColor(0xFFFFFFFF);
+					//canvas.drawRect(0, height-20, GameVariables.divide[7], height, middle);
+					storyPaint.setStyle(Paint.Style.FILL);
+					storyPaint.setAlpha(storyAlpha);
+					helperLine.moveTo(GameVariables.divide[7]*3, height-1);
+					helperLine.lineTo(centerx-100 + (200/7)*3, centery+100);
+					helperLine.lineTo(centerx-100 + (200/7)*4, centery+100);
+					helperLine.lineTo(GameVariables.divide[7]*4, height-1);
+					canvas.drawPath(helperLine, storyPaint);
+					helperLine.reset();
+					if (GameVariables.soundPlayed == 0){
+						GameVariables.storytime = 13001;
+					}
+				}
+				else if (GameVariables.storytime >= 13001 && GameVariables.storytime <= 14000){
+					GameVariables.randFreq = 8000;
+					GameVariables.volume = 0;
+					storyAlpha = 0;
+					GameVariables.soundPlayed = 1;
+					GameVariables.storytime = 14001;
+				}
+				else if (GameVariables.storytime >= 14001 && GameVariables.storytime <= 15000){
+					if (storyAlpha <=240){
+						storyAlpha += 10;
+					}
+					else{
+						GameVariables.storytime = 15001;
+					}
+					storyPaint.setColor(0xFFFFFFFF);
+					//canvas.drawRect(0, height-20, GameVariables.divide[7], height, middle);
+					storyPaint.setStyle(Paint.Style.FILL);
+					storyPaint.setAlpha(storyAlpha);
+					helperLine.moveTo(GameVariables.divide[7]*4, height-1);
+					helperLine.lineTo(centerx-100 + (200/7)*4, centery+100);
+					helperLine.lineTo(centerx-100 + (200/7)*5, centery+100);
+					helperLine.lineTo(GameVariables.divide[7]*5, height-1);
+					canvas.drawPath(helperLine, storyPaint);
+					helperLine.reset();
+					if (GameVariables.soundPlayed == 0){
+						GameVariables.storytime = 16001;
+					}
+				}
+				else if (GameVariables.storytime >= 15001 && GameVariables.storytime <= 16000){
+					if (storyAlpha >=10){
+						storyAlpha -= 10;
+					}
+					else{
+						GameVariables.storytime = 14001;
+					}
+					storyPaint.setColor(0xFFFFFFFF);
+					//canvas.drawRect(0, height-20, GameVariables.divide[7], height, middle);
+					storyPaint.setStyle(Paint.Style.FILL);
+					storyPaint.setAlpha(storyAlpha);
+					helperLine.moveTo(GameVariables.divide[7]*4, height-1);
+					helperLine.lineTo(centerx-100 + (200/7)*4, centery+100);
+					helperLine.lineTo(centerx-100 + (200/7)*5, centery+100);
+					helperLine.lineTo(GameVariables.divide[7]*5, height-1);
+					canvas.drawPath(helperLine, storyPaint);
+					helperLine.reset();
+					if (GameVariables.soundPlayed == 0){
+						GameVariables.storytime = 16001;
+					}
+				}
+				else if (GameVariables.storytime >= 16001 && GameVariables.storytime <= 17000){
+					GameVariables.randFreq = 10000;
+					GameVariables.volume = 0;
+					storyAlpha = 0;
+					GameVariables.soundPlayed = 1;
+					GameVariables.storytime = 17001;
+				}
+				else if (GameVariables.storytime >= 17001 && GameVariables.storytime <= 18000){
+					if (storyAlpha <=240){
+						storyAlpha += 10;
+					}
+					else{
+						GameVariables.storytime = 18001;
+					}
+					storyPaint.setColor(0xFFFFFFFF);
+					//canvas.drawRect(0, height-20, GameVariables.divide[7], height, middle);
+					storyPaint.setStyle(Paint.Style.FILL);
+					storyPaint.setAlpha(storyAlpha);
+					helperLine.moveTo(GameVariables.divide[7]*5, height-1);
+					helperLine.lineTo(centerx-100 + (200/7)*5, centery+100);
+					helperLine.lineTo(centerx-100 + (200/7)*6, centery+100);
+					helperLine.lineTo(GameVariables.divide[7]*6, height-1);
+					canvas.drawPath(helperLine, storyPaint);
+					helperLine.reset();
+					if (GameVariables.soundPlayed == 0){
+						GameVariables.storytime = 19001;
+					}
+				}
+				else if (GameVariables.storytime >= 18001 && GameVariables.storytime <= 19000){
+					if (storyAlpha >=10){
+						storyAlpha -= 10;
+					}
+					else{
+						GameVariables.storytime = 17001;
+					}
+					storyPaint.setColor(0xFFFFFFFF);
+					//canvas.drawRect(0, height-20, GameVariables.divide[7], height, middle);
+					storyPaint.setStyle(Paint.Style.FILL);
+					storyPaint.setAlpha(storyAlpha);
+					helperLine.moveTo(GameVariables.divide[7]*5, height-1);
+					helperLine.lineTo(centerx-100 + (200/7)*5, centery+100);
+					helperLine.lineTo(centerx-100 + (200/7)*6, centery+100);
+					helperLine.lineTo(GameVariables.divide[7]*6, height-1);
+					canvas.drawPath(helperLine, storyPaint);
+					helperLine.reset();
+					if (GameVariables.soundPlayed == 0){
+						GameVariables.storytime = 19001;
+					}
+				}
+				else if (GameVariables.storytime >= 19001 && GameVariables.storytime <= 20000){
+					GameVariables.randFreq = 14000;
+					GameVariables.volume = 0;
+					storyAlpha = 0;
+					GameVariables.soundPlayed = 1;
+					GameVariables.storytime = 20001;
+				}
+				else if (GameVariables.storytime >= 20001 && GameVariables.storytime <= 21000){
+					if (storyAlpha <=240){
+						storyAlpha += 10;
+					}
+					else{
+						GameVariables.storytime = 21001;
+					}
+					storyPaint.setColor(0xFFFFFFFF);
+					//canvas.drawRect(0, height-20, GameVariables.divide[7], height, middle);
+					storyPaint.setStyle(Paint.Style.FILL);
+					storyPaint.setAlpha(storyAlpha);
+					helperLine.moveTo(GameVariables.divide[7]*6, height-1);
+					helperLine.lineTo(centerx-100 + (200/7)*6, centery+100);
+					helperLine.lineTo(centerx-100 + (200/7)*7, centery+100);
+					helperLine.lineTo(GameVariables.divide[7]*7, height-1);
+					canvas.drawPath(helperLine, storyPaint);
+					helperLine.reset();
+					if (GameVariables.soundPlayed == 0){
+						GameVariables.storytime = 22001;
+					}
+				}
+				else if (GameVariables.storytime >= 21001 && GameVariables.storytime <= 22000){
+					if (storyAlpha >=10){
+						storyAlpha -= 10;
+					}
+					else{
+						GameVariables.storytime = 20001;
+					}
+					storyPaint.setColor(0xFFFFFFFF);
+					//canvas.drawRect(0, height-20, GameVariables.divide[7], height, middle);
+					storyPaint.setStyle(Paint.Style.FILL);
+					storyPaint.setAlpha(storyAlpha);
+					helperLine.moveTo(GameVariables.divide[7]*6, height-1);
+					helperLine.lineTo(centerx-100 + (200/7)*6, centery+100);
+					helperLine.lineTo(centerx-100 + (200/7)*7, centery+100);
+					helperLine.lineTo(GameVariables.divide[7]*7, height-1);
+					canvas.drawPath(helperLine, storyPaint);
+					helperLine.reset();
+					if (GameVariables.soundPlayed == 0){
+						GameVariables.storytime = 22001;
+					}
+				}
+				else if (GameVariables.storytime >= 22001 ){
+					GameVariables.storytime = 0;
+					GameVariables.story = 16;
+				}		
+			}
+		}
+		else if (GameVariables.story == 16){
+			if (GameVariables.storytime >= 0 && GameVariables.storytime <= 600){
+				story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title17);
+			}
+			drawBackground(canvas);
+			drawBox(canvas);
+			drawHUD(canvas);
+			modifyBoxes();
+			drawHelper(canvas);
+			drawShip(canvas);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			storyPaint.setColor(Color.BLACK);
+			if (GameVariables.storytime <= (story1.getWidth())){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+			}
+			else if (GameVariables.storytime >= story1.getWidth() && GameVariables.storytime <= 10000){
+				generateEnemy(canvas);
+				GameVariables.storytime = 10001;
+				moveShip(GameVariables.controlMethod);
+
+			}
+			else if (GameVariables.storytime >= 10001 && GameVariables.storytime <= 20000){
+				totalSpeed = 0;
+
+				if (GameVariables.isSummoned == 1){
+					middle.setColor(Color.WHITE);
+					canvas.drawRect(GameVariables.enemyLocation[0], (float)height-10, GameVariables.enemyLocation[1], (float)height, middle);
+					drawGlass(canvas);
+				}
+				moveShip(GameVariables.controlMethod);
+			}
+			else if (GameVariables.storytime >= 20001 && GameVariables.storytime <= 30000){
+				GameVariables.storytime = 0;
+				GameVariables.story = 17;
+			}
+			else if (GameVariables.storytime >= 30001 && GameVariables.storytime <= 40000){
+				GameVariables.storytime = 10000;
+				GameVariables.story = 17;
+			}
+		}
+		else if (GameVariables.story == 17){
+			if (GameVariables.storytime >= 0 && GameVariables.storytime <= 9999){
+				story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title18a);
+			}
+			else{
+				story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title18b);
+			}
+			drawBackground(canvas);
+			drawBox(canvas);
+			drawHUD(canvas);
+			modifyBoxes();
+			drawHelper(canvas);
+			drawShip(canvas);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			storyPaint.setColor(Color.BLACK);
+			if (GameVariables.storytime <= (story1.getWidth())){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+			}
+			else if (GameVariables.storytime >= story1.getWidth() && GameVariables.storytime <= 10000){
+				GameVariables.storytime = 0;
+				GameVariables.story = 16;
+			}
+			else if (GameVariables.storytime >= 10000 && GameVariables.storytime <= (story1.getWidth()+10000)){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+			}
+			else if (GameVariables.storytime >= story1.getWidth()+10000){
+				GameVariables.storytime = 0;
+				GameVariables.story = 18;
+			}
+		}
+		else if (GameVariables.story == 18){
+			if (GameVariables.storytime >= 0 && GameVariables.storytime <= 600){
+				story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title19);
+			}
+			else if (GameVariables.storytime >= 600 && GameVariables.storytime <= 750){
+				story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title20);
+			}
+			else if (GameVariables.storytime >= 750 && GameVariables.storytime <= 900){
+				story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title21);
+			}
+			else if (GameVariables.storytime >= 900 && GameVariables.storytime <= 1050){
+				story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title22);
+			}
+			drawBackground(canvas);
+			drawBox(canvas);
+			drawHUD(canvas);
+			modifyBoxes();
+			drawHelper(canvas);
+			drawShip(canvas);
+			canvas.drawBitmap(story1, 0, height-story1.getHeight(), null);
+			if (GameVariables.storytime <= 1050){
+				canvas.drawRect(GameVariables.storytime, height-story1.getHeight(), width, height, storyPaint);
+			}
+			else 
+			{
+					GameVariables.storytime = 0;
+					GameVariables.help = 0;
+					GameVariables.where = 0;
+					ship_x = centerx - (ship.getHeight()/2);;
+					ship_y = height-70;
+					drawShip(canvas);
+				
+			}
+		}
 	}
+	public void playBack(Canvas canvas) {
+		GameVariables.story=15;
+		totalSpeed = 0;
+		if (y == height && gettingHit == 0 && shot_fired == 0){
+
+			moveShip(GameVariables.controlMethod); // 2 options to move the ship in here		
+		}
+		else if (gettingHit == 0){
+			//ship = BitmapFactory.decodeResource(getResources(), R.drawable.shipfront);
+			y = height;
+			if (shot_fired == 0 && boosting > 195 && GameVariables.tutorial > 1){
+				//x = ship_x;
+				
+				if (GameVariables.controlMethod == true) {
+					GameVariables.shotfrom = ship_x;
+					shot_fired = 1;
+					shooting = 1;
+					GameVariables.pressAt = GameVariables.volume;
+				}
+				//if using touch controls, shooting = 1 only of touch is top half of the screen
+				else if (GameVariables.controlMethod == false){
+					if (GameVariables.touchY < (height/2 -1)  ) {
+						GameVariables.shotfrom = ship_x;
+						//ship_x = x;
+						xSpeed = 0;
+						x = ship_x;
+						ship = BitmapFactory.decodeResource(getResources(), R.drawable.shipfront);
+						shot_fired = 1;
+						shooting = 1;
+						GameVariables.pressAt = GameVariables.volume;
+					}
+					else {
+						shot_fired = 0;
+						shooting = 0;
+					}
+				}
+				
+			}
+			else{
+				GameVariables.tutorial++;
+			}
+			
+		}
+		
+		drawBackground(canvas);
+		drawBox(canvas);
+		drawHUD(canvas);
+		modifyBoxes();
+		drawHelper(canvas);
+		drawShip(canvas);
+		//drawGlass(canvas);
+
+		if (GameVariables.storytime >= 0 && GameVariables.storytime <= 600){
+			story1 = BitmapFactory.decodeResource(getResources(), R.drawable.title16);
+		}
+		drawBackground(canvas);
+		drawBox(canvas);
+		drawHUD(canvas);
+		modifyBoxes();
+		drawHelper(canvas);
+		drawShip(canvas);
+		storyPaint.setColor(Color.BLACK);
+		if (GameVariables.storytime >= 0 && GameVariables.storytime <= 2000){
+			if (GameVariables.playBackLevel == 1){
+				GameVariables.randFreq = 500;
+			}
+			else if (GameVariables.playBackLevel == GameVariables.level){
+				GameVariables.randFreq = 14000;
+			}
+			else if (GameVariables.level == 3){
+				if (GameVariables.playBackLevel == 2){
+					GameVariables.randFreq = 5000;
+				}
+			}
+			else if (GameVariables.level == 4){
+				if (GameVariables.playBackLevel == 2){
+					GameVariables.randFreq = 3000;
+				}
+				else if (GameVariables.playBackLevel == 3){
+					GameVariables.randFreq = 10000;
+				}
+			}
+			else if (GameVariables.level == 5){
+				if (GameVariables.playBackLevel == 2){
+					GameVariables.randFreq = 3000;
+				}
+				else if (GameVariables.playBackLevel == 3){
+					GameVariables.randFreq = 5000;
+				}
+				else if (GameVariables.playBackLevel == 4){
+					GameVariables.randFreq = 8000;
+				}
+			}
+			else if (GameVariables.level == 6){
+				if (GameVariables.playBackLevel == 2){
+					GameVariables.randFreq = 1000;
+				}
+				else if (GameVariables.playBackLevel == 3){
+					GameVariables.randFreq = 3000;
+				}
+				else if (GameVariables.playBackLevel == 4){
+					GameVariables.randFreq = 5000;
+				}
+				else if (GameVariables.playBackLevel == 3){
+					GameVariables.randFreq = 10000;
+				}
+			}
+			else if (GameVariables.level == 7){
+				if (GameVariables.playBackLevel == 2){
+					GameVariables.randFreq = 1000;
+				}
+				else if (GameVariables.playBackLevel == 3){
+					GameVariables.randFreq = 3000;
+				}
+				else if (GameVariables.playBackLevel == 4){
+					GameVariables.randFreq = 5000;
+				}
+				else if (GameVariables.playBackLevel == 3){
+					GameVariables.randFreq = 8000;
+				}
+				else if (GameVariables.playBackLevel == 4){
+					GameVariables.randFreq = 10000;
+				}
+			}
+			GameVariables.volume = 0;
+			GameVariables.soundPlayed = 1;
+			GameVariables.storytime = 2001;
+		}
+		else if (GameVariables.storytime >= 2001 && GameVariables.storytime <= 3000){
+			if (storyAlpha <=240){
+				storyAlpha += 10;
+			}
+			else{
+				GameVariables.storytime = 3001;
+			}
+			storyPaint.setColor(0xFFFFFFFF);
+			storyPaint.setStyle(Paint.Style.FILL);
+			storyPaint.setAlpha(storyAlpha);
+			helperLine.moveTo(GameVariables.divide[GameVariables.level]*(GameVariables.playBackLevel-1), height-1);
+			helperLine.lineTo(centerx-100 + (200/GameVariables.level)*(GameVariables.playBackLevel-1), centery+100);
+			helperLine.lineTo(centerx-100 + (200/GameVariables.level)*(GameVariables.playBackLevel), centery+100);
+			helperLine.lineTo(GameVariables.divide[GameVariables.level]*(GameVariables.playBackLevel), height-1);
+			canvas.drawPath(helperLine, storyPaint);
+			helperLine.reset();
+			if (GameVariables.soundPlayed == 0 && storyAlpha <= 240){
+				GameVariables.storytime = 0;
+				GameVariables.playBackLevel ++;
+			}
+		}
+		else if (GameVariables.storytime >= 3001 && GameVariables.storytime <= 4000){
+			if (storyAlpha >=10){
+				storyAlpha -= 10;
+			}
+			else{
+				GameVariables.storytime = 2001;
+			}
+			storyPaint.setColor(0xFFFFFFFF);
+			//canvas.drawRect(0, height-20, GameVariables.divide[7], height, middle);
+			storyPaint.setStyle(Paint.Style.FILL);
+			storyPaint.setAlpha(storyAlpha);
+			helperLine.moveTo(GameVariables.divide[GameVariables.level]*(GameVariables.playBackLevel-1), height-1);
+			helperLine.lineTo(centerx-100 + (200/GameVariables.level)*(GameVariables.playBackLevel-1), centery+100);
+			helperLine.lineTo(centerx-100 + (200/GameVariables.level)*(GameVariables.playBackLevel), centery+100);
+			helperLine.lineTo(GameVariables.divide[GameVariables.level]*(GameVariables.playBackLevel), height-1);
+			canvas.drawPath(helperLine, storyPaint);
+			helperLine.reset();
+			if (GameVariables.soundPlayed == 0 && storyAlpha >= 10){
+				GameVariables.storytime = 0;
+				GameVariables.playBackLevel ++;
+			}
+		}
+		if (GameVariables.playBackLevel > GameVariables.level){
+			GameVariables.playBack = 0;
+			GameVariables.story = 0;
+
+		}
+		
+		
+
+		drawShip(canvas);
+
+	}
+
 	public void moveShip(boolean controlMethod) {
 		
 		//MOVE BY ACCELEROMETER
@@ -906,105 +1783,151 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 	}
 
 	protected void generateEnemy(Canvas canvas) {
-		if (GameVariables.isSummoned == 0 && (System.currentTimeMillis() - GameVariables.lastPlayed) > 4000){
+		if ((GameVariables.isSummoned == 0 && (System.currentTimeMillis() - GameVariables.lastPlayed) > 4000) || GameVariables.story == 16){
 			summontime=r.nextInt(100);
+			if (GameVariables.story == 16){
+				summontime = 50;
+				GameVariables.tutorial = 1;
+			}
 			if (summontime == 50 && GameVariables.tutorial > 0){
 				float calc = 0;
 				GameVariables.duration = 1;
 				count = 0;
 				calc = r.nextInt(GameVariables.level);
-				GameVariables.randFreq = (int)(r.nextInt(17500/GameVariables.level) + calc*(17500/GameVariables.level) + 500);
+				//GameVariables.randFreq = (int)(r.nextInt(17500/GameVariables.level) + calc*(17500/GameVariables.level) + 500);
 				if (GameVariables.level == 2){
 					if (calc == 0){
 						GameVariables.gamecolor = 1;
+						GameVariables.randFreq = 500;
 					}
 					else if (calc == 1){
 						GameVariables.gamecolor = 7;
+						GameVariables.randFreq = 14000;
 					}
 				}
 				if (GameVariables.level == 3){
 					if (calc == 0){
 						GameVariables.gamecolor = 1;
+						GameVariables.randFreq = 500;
 					}
 					else if (calc == 1){
 						GameVariables.gamecolor = 4;
+						GameVariables.randFreq = 5000;
 					}
 					else if (calc == 2){
 						GameVariables.gamecolor = 7;
+						GameVariables.randFreq = 14000;
 					}
 				}
 				if (GameVariables.level == 4){
 					if (calc == 0){
 						GameVariables.gamecolor = 1;
+						GameVariables.randFreq = 500;
 					}
 					else if (calc == 1){
 						GameVariables.gamecolor = 3;
+						GameVariables.randFreq = 3000;
 					}
 					else if (calc == 2){
 						GameVariables.gamecolor = 6;
+						GameVariables.randFreq = 10000;
 					}
 					else if (calc == 3){
 						GameVariables.gamecolor = 7;
+						GameVariables.randFreq = 14000;
 					}
 				}
 				if (GameVariables.level == 5){
 					if (calc == 0){
 						GameVariables.gamecolor = 1;
+						GameVariables.randFreq = 500;
 					}
 					else if (calc == 1){
 						GameVariables.gamecolor = 3;
+						GameVariables.randFreq = 3000;
 					}
 					else if (calc == 2){
 						GameVariables.gamecolor = 4;
+						GameVariables.randFreq = 5000;
 					}
 					else if (calc == 3){
 						GameVariables.gamecolor = 6;
+						GameVariables.randFreq = 8000;
 					}
 					else if (calc == 4){
 						GameVariables.gamecolor = 7;
+						GameVariables.randFreq = 14000;
 					}
 				}
 				if (GameVariables.level == 6){
 					if (calc == 0){
 						GameVariables.gamecolor = 1;
+						GameVariables.randFreq = 500;
 					}
 					else if (calc == 1){
 						GameVariables.gamecolor = 2;
+						GameVariables.randFreq = 1000;
 					}
 					else if (calc == 2){
 						GameVariables.gamecolor = 3;
+						GameVariables.randFreq = 3000;
 					}
 					else if (calc == 3){
 						GameVariables.gamecolor = 4;
+						GameVariables.randFreq = 5000;
 					}
 					else if (calc == 4){
 						GameVariables.gamecolor = 6;
+						GameVariables.randFreq = 10000;
 					}
 					else if (calc == 5){
 						GameVariables.gamecolor = 7;
+						GameVariables.randFreq = 14000;
 					}
 				}
 				if (GameVariables.level == 7){
 					if (calc == 0){
 						GameVariables.gamecolor = 1;
+						GameVariables.randFreq = 500;
 					}
 					else if (calc == 1){
 						GameVariables.gamecolor = 2;
+						GameVariables.randFreq = 1000;
 					}
 					else if (calc == 2){
 						GameVariables.gamecolor = 3;
+						GameVariables.randFreq = 3000;
 					}
 					else if (calc == 3){
 						GameVariables.gamecolor = 4;
-					}
-					else if (calc == 4){
-						GameVariables.gamecolor = 6;
+						GameVariables.randFreq = 5000;
 					}
 					else if (calc == 5){
+						GameVariables.gamecolor = 5;
+						GameVariables.randFreq = 8000;
+					}
+					else if (calc == 6){
+						GameVariables.gamecolor = 6;
+						GameVariables.randFreq = 10000;
+					}
+					else if (calc == 7){
 						GameVariables.gamecolor = 7;
+						GameVariables.randFreq = 14000;
 					}
 				}
-
+				
+				if (GameVariables.earMethod == 0){
+					GameVariables.earTesting = 0;
+				}
+				else if (GameVariables.earMethod == 1){
+					GameVariables.earTesting = 1;
+				}
+				else if (GameVariables.earMethod == 2){
+					GameVariables.earTesting = 2;
+				}
+				else if (GameVariables.earMethod == 3){
+					GameVariables.earTesting = r.nextInt(3);
+				}
 				//dimensions[0]=(width/7)*(GameVariables.randFreq);
 				//dimensions[1]=(width/7)*(GameVariables.randFreq+1);
 				dimensions[0]=((float)((float)GameVariables.randFreq/20000)*width)-50;
@@ -1013,6 +1936,8 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 				GameVariables.enemyLocation[1] = width/GameVariables.level*(calc+1);
 				glassopa = 0;
 				spawning = 0;
+				//GameVariables.randFreq = (int)(r.nextInt(17500/GameVariables.level) + calc*(17500/GameVariables.level) + 500);
+
 				GameVariables.glassStart = System.currentTimeMillis();
 				GameVariables.volume = 0;
 				GameVariables.isSummoned = 1;
@@ -1322,19 +2247,21 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 		}
 		
 		if (((centerx - 95 - count*(centerx-95)/(centery-95)) < 0) || (centerx+95 + count*(width-centerx-95)/(height-centery-95)) > width){
-			if (GameVariables.isSummoned == 1){
+			if (GameVariables.isSummoned == 1 && GameVariables.story != 16){
 				if ((ship_x > GameVariables.enemyLocation[0]) && (ship_x < GameVariables.enemyLocation[1])){
 					GameVariables.score[GameVariables.currentscore][0] = GameVariables.randFreq;
 					GameVariables.score[GameVariables.currentscore][1] = (System.currentTimeMillis() - GameVariables.enemyAppear);
 					GameVariables.score[GameVariables.currentscore][2] = GameVariables.volume;
 					GameVariables.xRaw[GameVariables.currentscore] = GameVariables.randFreq;
-					GameVariables.yRaw[GameVariables.currentscore] = GameVariables.volume; 
+					GameVariables.yRaw[GameVariables.currentscore] = GameVariables.volume;
+					GameVariables.earRaw[GameVariables.currentscore] = GameVariables.earTesting; 
 					//GameVariables.yRaw[GameVariables.currentscore] = (2000 - GameVariables.volume*100);
 					GameVariables.currentscore++;
 					GameVariables.isSummoned = 0;
         			GameVariables.soundPlayed = 0;
         			GameVariables.levelchange --;
         			GameVariables.scoretime += (21 - GameVariables.pressAt); 
+        			GameVariables.scoretime += 10;
         			updateScore();
 
         					//(GameVariables.pressAt - GameVariables.volume);
@@ -1349,7 +2276,18 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 					GameVariables.hit = 1;
 				}
 			}
-			
+			else if (GameVariables.isSummoned == 1 && GameVariables.story == 16){
+				if ((ship_x > GameVariables.enemyLocation[0]) && (ship_x < GameVariables.enemyLocation[1])){
+					GameVariables.storytime = 30000;
+					GameVariables.isSummoned = 0;
+        			GameVariables.soundPlayed = 0;
+				}
+				else{
+					GameVariables.storytime = 20000;
+					GameVariables.isSummoned = 0;
+        			GameVariables.soundPlayed = 0;
+				}
+			}
 			
 			//canvas.drawBitmap(crash, ship_x - (ship.getWidth()/2), ship_y - (ship.getHeight()/2), null);
 		}
@@ -1486,7 +2424,6 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 		HUDcolor = 0xFFCCFFFF; 
 		HUDpaint.setColor(HUDcolor);
 		HUDpaint.setStyle(Style.STROKE);
-		canvas.drawRect(0, 0, width, 20, HUDpaint);
 
 		canvas.drawBitmap(thousand, 0, 20, null);
 		canvas.drawBitmap(hundred, 0, 20, null);
@@ -1644,7 +2581,8 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 
 	}
 	
-	public void drawHelper(Canvas canvas){
+
+public void drawHelper(Canvas canvas){
 		
 		helperPaint.setStyle(Paint.Style.FILL);
 		if (GameVariables.level == 2){
@@ -1935,7 +2873,6 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 			helperLine.reset();
 		}
 	}
-	
 	/*
 	public void drawHelper(Canvas canvas){
 		middle.setStyle(Paint.Style.FILL);
@@ -2011,7 +2948,7 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 		if (shot_fired == 1){
 			edges.setAlpha(100);
 		}
-		else{
+		else if (GameVariables.help != 1){
 			edges.setAlpha(100);
 			if (boosting < 196){
 				boosting +=4;
@@ -2130,22 +3067,22 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 						botCurrentTiming[i] = 0;
 					}
 					else if ((botCurrentSize[i]+botCurrentPlace[i]+centery+100) >= height){
-						botCurrentPlace[i]+=4* GameVariables.speedModifier;
-						botCurrentSize[i]+=4* GameVariables.speedModifier;
+						botCurrentPlace[i]+=4* GameVariables.speedModifier*2;
+						botCurrentSize[i]+=4* GameVariables.speedModifier*2;
 					}
 					else if (botCurrentSize[i] < botSize[i]){
 						if (botCurrentSize[i]+centery+100 > height-(centery+100)/2){
-							botCurrentSize[i]+=1* GameVariables.speedModifier;
+							botCurrentSize[i]+=1* GameVariables.speedModifier*2;
 						}
-						botCurrentSize[i]+=1* GameVariables.speedModifier;
+						botCurrentSize[i]+=1* GameVariables.speedModifier*2 + GameVariables.storySpeed;
 					}
 					else if (botCurrentSize[i] >= botSize[i]){
 						if (botCurrentPlace[i]+centery+100 > height-(centery+100)/2){
-							botCurrentPlace[i]+=1* GameVariables.speedModifier;
-							botCurrentSize[i]+=1* GameVariables.speedModifier;
+							botCurrentPlace[i]+=1* GameVariables.speedModifier*2;
+							botCurrentSize[i]+=1* GameVariables.speedModifier*2;
 						}
-						botCurrentSize[i]+=1* GameVariables.speedModifier;
-						botCurrentPlace[i]+=1* GameVariables.speedModifier;
+						botCurrentSize[i]+=1* GameVariables.speedModifier*2;
+						botCurrentPlace[i]+=1* GameVariables.speedModifier*2;
 					}
 				}
 				if (i>=20){
@@ -2156,10 +3093,10 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 						botCurrentTiming[i] = 0;
 					}
 					else if ((botCurrentSize[i]+botCurrentPlace[i]+centery+100) >= height){
-						botCurrentPlace[i]+=16* GameVariables.speedModifier;
+						botCurrentPlace[i]+=16* GameVariables.speedModifier*2;
 					}
 					else if (botCurrentSize[i] >= botSize[i]){
-						botCurrentPlace[i]+=8* GameVariables.speedModifier;
+						botCurrentPlace[i]+=8* GameVariables.speedModifier*2;
 					}
 				}
 			}
@@ -2177,22 +3114,22 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 						topCurrentTiming[i] = 0;
 					}
 					else if ((centery-100)-(topCurrentSize[i]+topCurrentPlace[i]) <= 0){
-						topCurrentPlace[i]+=4* GameVariables.speedModifier;
-						topCurrentSize[i]+=4* GameVariables.speedModifier;
+						topCurrentPlace[i]+=4* GameVariables.speedModifier*2;
+						topCurrentSize[i]+=4* GameVariables.speedModifier*2;
 					}
 					else if (topCurrentSize[i] < topSize[i]){
 						if (centery-100-topCurrentSize[i] < (centery-100)/2){
-							topCurrentSize[i]+=1* GameVariables.speedModifier;
+							topCurrentSize[i]+=1* GameVariables.speedModifier*2;
 						}
-						topCurrentSize[i]++;
+						topCurrentSize[i]+=1* GameVariables.speedModifier*2 + GameVariables.storySpeed;
 					}
 					else if (topCurrentSize[i] >= topSize[i]){
 						if (centery+100-topCurrentPlace[i] < (centery-100)/2){
-							topCurrentPlace[i]+=1* GameVariables.speedModifier;
-							topCurrentSize[i]+=1* GameVariables.speedModifier;
+							topCurrentPlace[i]+=1* GameVariables.speedModifier*2;
+							topCurrentSize[i]+=1* GameVariables.speedModifier*2;
 						}
-						topCurrentSize[i]+=1* GameVariables.speedModifier;
-						topCurrentPlace[i]+=1* GameVariables.speedModifier;
+						topCurrentSize[i]+=1* GameVariables.speedModifier*2;
+						topCurrentPlace[i]+=1* GameVariables.speedModifier*2;
 					}
 				}
 				if (i>=20){
@@ -2203,10 +3140,10 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 						topCurrentTiming[i] = 0;
 					}
 					else if ((centery-100)-(topCurrentSize[i]+topCurrentPlace[i]) <= 0){
-						topCurrentPlace[i]+=16* GameVariables.speedModifier;
+						topCurrentPlace[i]+=16* GameVariables.speedModifier*2;
 					}
 					else if (topCurrentSize[i] >= topSize[i]){
-						topCurrentPlace[i]+=8* GameVariables.speedModifier;
+						topCurrentPlace[i]+=8* GameVariables.speedModifier*2;
 					}
 				}
 			}
@@ -2225,21 +3162,21 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 						leftCurrentTiming[i] = 0;
 					}
 					else if ((centerx-100)-(leftCurrentSize[i]+leftCurrentPlace[i]) <= 0){
-						leftCurrentPlace[i]+=4* GameVariables.speedModifier;
+						leftCurrentPlace[i]+=4* GameVariables.speedModifier*2;
 					}
 					else if (leftCurrentSize[i] < leftSize[i]){
 						if (centerx-100-leftCurrentSize[i] < (centerx-100)/2){
-							leftCurrentSize[i]+=2* GameVariables.speedModifier;
+							leftCurrentSize[i]+=2* GameVariables.speedModifier*2;
 						}
-						leftCurrentSize[i]+=2* GameVariables.speedModifier;
+						leftCurrentSize[i]+=2* GameVariables.speedModifier*2 + GameVariables.storySpeed;
 					}
 					else if (leftCurrentSize[i] >= leftSize[i]){
 						if (centerx-100-leftCurrentPlace[i] < (centerx-100)/2){
-							leftCurrentPlace[i]+=2* GameVariables.speedModifier;
-							leftCurrentSize[i]+=2* GameVariables.speedModifier;
+							leftCurrentPlace[i]+=2* GameVariables.speedModifier*2;
+							leftCurrentSize[i]+=2* GameVariables.speedModifier*2;
 						}
-						leftCurrentSize[i]+=2* GameVariables.speedModifier;
-						leftCurrentPlace[i]+=2* GameVariables.speedModifier;
+						leftCurrentSize[i]+=2* GameVariables.speedModifier*2;
+						leftCurrentPlace[i]+=2* GameVariables.speedModifier*2;
 					}
 				}
 				if (i>=20){
@@ -2250,10 +3187,10 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 						leftCurrentTiming[i] = 0;
 					}
 					else if ((centerx-100)-(leftCurrentSize[i]+leftCurrentPlace[i]) <= 0){
-						leftCurrentPlace[i]+=16* GameVariables.speedModifier;
+						leftCurrentPlace[i]+=16* GameVariables.speedModifier*2;
 					}
 					else if (leftCurrentSize[i] >= leftSize[i]){
-						leftCurrentPlace[i]+=8* GameVariables.speedModifier;
+						leftCurrentPlace[i]+=8* GameVariables.speedModifier*2;
 					}
 				}
 			}
@@ -2271,21 +3208,21 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 						rightCurrentTiming[i] = 0;
 					}
 					else if ((rightCurrentSize[i]+rightCurrentPlace[i]+centerx+100) >= width){
-						rightCurrentPlace[i]+=8* GameVariables.speedModifier;
+						rightCurrentPlace[i]+=8* GameVariables.speedModifier*2;
 					}
 					else if (rightCurrentSize[i] < rightSize[i]){
 						if (rightCurrentSize[i]+centerx+100 > width-(centerx+100)/2){
-							rightCurrentSize[i]+=2* GameVariables.speedModifier;
+							rightCurrentSize[i]+=2* GameVariables.speedModifier*2;
 						}
-						rightCurrentSize[i]+=2* GameVariables.speedModifier;
+						rightCurrentSize[i]+=2* GameVariables.speedModifier*2 + GameVariables.storySpeed;
 					}
 					else if (rightCurrentSize[i] >= rightSize[i]){
 						if (rightCurrentPlace[i]+centerx+100 > width-(centerx+100)/2){
-							rightCurrentPlace[i]+=2* GameVariables.speedModifier;
-							rightCurrentSize[i]+=2* GameVariables.speedModifier;
+							rightCurrentPlace[i]+=2* GameVariables.speedModifier*2;
+							rightCurrentSize[i]+=2* GameVariables.speedModifier*2;
 						}
-						rightCurrentSize[i]+=2* GameVariables.speedModifier;
-						rightCurrentPlace[i]+=2* GameVariables.speedModifier;
+						rightCurrentSize[i]+=2* GameVariables.speedModifier*2;
+						rightCurrentPlace[i]+=2* GameVariables.speedModifier*2;
 					}
 				}
 				if (i>=20){
@@ -2296,10 +3233,10 @@ public class GameView extends SurfaceView implements SensorEventListener, Surfac
 						rightCurrentTiming[i] = 0;
 					}
 					else if ((rightCurrentSize[i]+rightCurrentPlace[i]+centerx+100) >= width){
-						rightCurrentPlace[i]+=16* GameVariables.speedModifier;
+						rightCurrentPlace[i]+=16* GameVariables.speedModifier*2;
 					}
 					else if  (rightCurrentSize[i] >= rightSize[i]){
-						rightCurrentPlace[i]+=8* GameVariables.speedModifier;
+						rightCurrentPlace[i]+=8* GameVariables.speedModifier*2;
 					}
 				}
 			}

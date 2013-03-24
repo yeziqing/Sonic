@@ -63,8 +63,13 @@ public class GameLoopThread extends Thread {
                         		   if (GameVariables.help == 1){
                         			   view.beginning(c);
                         		   }
+                        		   else if (GameVariables.playBack == 1 && GameVariables.level >= 2){
+                        			   view.playBack(c);
+                        		   }
                         		   else if (GameVariables.pause == 0){
-                        			   view.generateEnemy(c);
+                        			   if (GameVariables.levelchange != 0){
+                        				   view.generateEnemy(c);
+                        			   }
                         			   view.onDraw(c);
                         		   }
                         		   else if (GameVariables.pause == 1){
@@ -75,6 +80,7 @@ public class GameLoopThread extends Thread {
                         				view.drawShip(c);
                         				view.drawTutorial(c);
                         		   }
+                        		   
                         	   }
                         	  else{
                         		  view.printResults(c);
@@ -118,11 +124,55 @@ public class GameLoopThread extends Thread {
 								}*/
                            }
                            
-                          
-                          
-                           if (GameVariables.levelchange == 0){
+                           if (GameVariables.story == 15 && GameVariables.soundPlayed == 1){
+                        	   //genTone();
+                        	 //play sound thread
+                        	  // System.gc();
+                        	   Thread thread = new Thread(new Runnable() {
+                                   public void run() {
+                                	  
+                                       genTone2();
+                                       handler.post(new Runnable() {
+
+                                           public void run() {
+                                               playSound2();
+                                           }
+                                       });
+                                   }
+                               });
+                               thread.start();
+                             
+								/*if (threadkiller == 1) {
+									thread.interrupt();
+									while (true) {
+										try {
+											thread.join(); // let thread die
+										} catch (InterruptedException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+										break;
+									}
+									thread = null;
+			
+								}*/
+                           }
+                           else if (GameVariables.story == 15 && GameVariables.soundPlayed == 2){
+                        		GameVariables.lastPlayed = System.currentTimeMillis(); 
+                        		GameVariables.soundPlayed = 3;
+                           }
+                           else if (GameVariables.story == 15 && GameVariables.soundPlayed == 3){
+                       			if (GameVariables.lastPlayed + 1000 <= System.currentTimeMillis()){ 
+                       				GameVariables.soundPlayed = 0;
+                       			}
+                           }
+                           
+                           if (GameVariables.levelchange == 0 && GameVariables.lastPlayed + 3000 <= System.currentTimeMillis() && GameVariables.pause == 0){
                         	   	GameVariables.level++;
-                        	   	GameVariables.levelchange = GameVariables.level;
+                        	   	GameVariables.levelchange = GameVariables.level + 3;
+                        	   	GameVariables.playBack = 1;
+                        	   	GameVariables.playBackLevel = 1;
+                        	   	GameVariables.storytime = 0;
                            }
                            if (GameVariables.lives == -1){
                         	   GameVariables.isRunning = 0;
@@ -277,11 +327,18 @@ public class GameLoopThread extends Thread {
 			GameVariables.soundStarted = System.currentTimeMillis();
 			
 			if (GameVariables.soundPlayed == 1) {
-				//GameVariables.volume+=4;
 				GameVariables.volume+=3;
-				
+
 				try {
-					track.setStereoVolume( (0.05f * GameVariables.volume), (0.05f * GameVariables.volume));
+					if (GameVariables.earTesting == 0){
+						track.setStereoVolume( (0.05f * GameVariables.volume), (0.05f * GameVariables.volume));
+					}
+					else if (GameVariables.earTesting == 1){
+						track.setStereoVolume( (0.05f * GameVariables.volume), 0);
+					}
+					else if (GameVariables.earTesting == 2){
+						track.setStereoVolume( 0, (0.05f * GameVariables.volume));
+					}
 				} catch (IllegalStateException ese) {
 					
 				}
@@ -294,7 +351,11 @@ public class GameLoopThread extends Thread {
 					System.gc();
 				}*/
 			}
-			track.play();
+			
+			try {
+				track.play();
+			}catch (IllegalStateException ese) {
+			}
 			
 		}
 		
@@ -316,6 +377,59 @@ public class GameLoopThread extends Thread {
 		}
 	}
 
+	void playSound2() {
+		track = new AudioTrack(AudioManager.STREAM_MUSIC,
+				(int) numSamples, AudioFormat.CHANNEL_CONFIGURATION_MONO,
+				AudioFormat.ENCODING_PCM_16BIT, buffer.length,
+				AudioTrack.MODE_STATIC);
+		int temp = track.write(buffer, 0, buffer.length);
+		if (temp != AudioTrack.ERROR_BAD_VALUE && temp != AudioTrack.ERROR_INVALID_OPERATION) {
+			
+			if (GameVariables.volume == 0) {
+				GameVariables.enemyAppear = System.currentTimeMillis();
+			}
+			
+			GameVariables.soundStarted = System.currentTimeMillis();
+			
+			if (GameVariables.soundPlayed == 1) {
+				GameVariables.volume+=1;
+				
+				try {
+					track.setStereoVolume( (0.5f), (0.5f));
+				} catch (IllegalStateException ese) {
+					
+				}
+				
+				/*if (GameVariables.volume == 20) {
+					track.pause();
+					track.stop();
+					track.flush();
+					track.release();
+					System.gc();
+				}*/
+			}
+			track.play();
+			GameVariables.soundPlayed = 2;
+		}
+		
+		if (GameVariables.volume > 100) {
+			
+			if(track != null) {	
+				
+				try {
+					track.pause();
+					track.stop();
+					track.flush();
+					//track.release();
+					threadkiller = 1;
+					GameVariables.soundPlayed = 0;
+				} catch (IllegalStateException ese) {
+					
+				}
+			}
+			
+		}
+	}
 
 
 

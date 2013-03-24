@@ -17,7 +17,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-
+//This contains all options for the game, including:
+//Control Option: Touch | Tilt
+//Ear Option: 0 | 1 | 2 | 3
+//Navigation to Calibration Page
 
 public class GameSettings extends ListActivity {
 
@@ -91,7 +94,7 @@ public class GameSettings extends ListActivity {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 	    //final EditText input = new EditText(this);
 	    alert.setTitle("Ear Options");
-	    alert.setMessage("Choose which ear(s) you would like to test:");
+	    alert.setMessage("Choose which ear(s) you would like to test: " );
 
 	    
 	    alert.setPositiveButton("Both", new DialogInterface.OnClickListener() {
@@ -101,6 +104,7 @@ public class GameSettings extends ListActivity {
 				editor.commit();
 	        }
 	    });
+	    
 	    
 		alert.setNegativeButton("Left", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {

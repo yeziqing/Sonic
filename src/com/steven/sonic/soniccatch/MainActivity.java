@@ -92,6 +92,11 @@ public class MainActivity extends Activity{
         bSettings.setTypeface(font1);
         bEarOption.setTypeface(font1);
         
+        bEarOption.setEnabled(false);
+        bSettings.setEnabled(false);
+        bEarOption.setVisibility(View.GONE);
+        bSettings.setVisibility(View.GONE);
+        
         bStart.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View view) {
